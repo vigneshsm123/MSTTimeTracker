@@ -1,3 +1,13 @@
+html, body, .wrap, .container{
+    height:100%;
+}
+header, footer{
+    height:10%;
+}
+.content-main-container{
+    min-height:80%;
+}
+
 .full-width {
     width: 100%;
     min-width: 100%;
@@ -43,7 +53,8 @@ header {
 }
 .content-container {
     padding: 15px;
-    background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33)); 
+    background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
+    height: 100%; 
 }
 .card-container.card {
     max-width: 350px;
@@ -179,6 +190,12 @@ footer {
      padding: 15px;
      text-align: center;
 }
+.user-menu {
+    background: #ccc;
+}
+.user-container {
+    padding: 15px;
+}
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
 		float:none !important;
@@ -188,4 +205,11 @@ footer {
 	.social-nav li{
 		float:left !important;
 	}
+    header{
+    height:25%;
+    }
+    .content-main-container{
+        min-height:65%;
+        overflow:auto;
+    }
 }
