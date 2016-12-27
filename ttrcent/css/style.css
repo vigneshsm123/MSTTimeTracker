@@ -196,6 +196,26 @@ footer {
 .user-container {
     padding: 15px;
 }
+.page-not {
+    min-height: 80%;
+    line-height: 200px;
+    text-align: center;
+}
+.page-not h2{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.gldp-default {
+    margin: 0 auto;
+}
+input#mydate-user {
+    visibility: collapse;
+}
+.editUser {
+    border: 1px solid #2e6da4;
+}
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
 		float:none !important;

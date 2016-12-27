@@ -13,42 +13,50 @@
 </div>
 <div class="user-container">
 	<div ng-show="tab === 1">
-	<div class="row">
-		<div class="col-md-6">
-			<form>
-			  <div class="form-group">
-			    <label for="exampleSelect2">Project</label>
-			    <select class="form-control" >
-			      <option>Fun Project</option>
-			      <option>NFDN</option>
-			    </select>
-			  </div>
-			  <div class="form-group">
-			    <label for="exampleInputEmail1">Duration</label>
-    			<input type="number" class="form-control" ng-model="duration" placeholder="Enter Duration"/>
-			  </div>
-			  <div class="form-group">
-			    <label for="exampleTextarea">Comment</label>
-			    <textarea class="form-control"  rows="3"></textarea>
-			  </div>
-			  <button type="submit" class="btn btn-primary">Submit</button>
-			</form>
+		<div class="row">
+			<div class="col-md-6">
+				<form name="userForm">
+				  <div class="form-group">
+				    <label for="exampleSelect2">Project</label>
+			    	<select class="form-control" ng-model="userProject" ng-options="userProject.name for userProject in userProjects">
+			  			<option value="">Select Project</option>
+			  		</select>
+				    
+				  </div>
+				  <div class="form-group">
+				    <label for="exampleInputEmail1">Duration</label>
+	    			<input type="number" class="form-control" ng-model="duration" placeholder="Enter Duration"/>
+				  </div>
+				  <div class="form-group">
+				    <label for="exampleTextarea">Comment</label>
+				    <textarea class="form-control"  rows="3" ng-model="userComment"></textarea>
+				  </div>
+				  <button type="submit" class="btn btn-primary" ng-click="myAlert()">Submit</button>
+				</form>
+			</div>
+			<div class="col-md-6">
+			<calender></calender>
+			</div>
 		</div>
-		<div class="col-md-6">
-		<calender></calender>
-		<!-- <section> -->
-			<!-- <h2>Single date</h2> -->
-			<!-- <article> -->
-				<!-- <div class="single-calender"></div> -->
-			<!-- </article> -->
-		<!-- </section> -->
-		</div>
-	</div>
+		<table ng-show="userTable" class="table table-bordered table-responsive table-striped">
+			<thead>
+				<th class="col-xs-3">Project</th>
+				<th class="col-xs-3">Duration</th>
+				<th class="col-xs-3">Comment</th>
+				<th class="col-xs-3">Date</th>
+			</thead>
+			<tr ng-repeat="info in informations">
+				<td class="col-xs-3" contenteditable="{{info.editTable}}" ng-class="{editUser: info.editTable}">{{info.Project}}</td>
+				<td class="col-xs-3" contenteditable="{{info.editTable}}" ng-class="{editUser: info.editTable}">{{info.Duration}}</td>
+				<td class="col-xs-3" contenteditable="{{info.editTable}}" ng-class="{editUser: info.editTable}">{{info.Comment}}</td>
+				<td class="col-xs-3" contenteditable="{{info.editTable}}" ng-class="{editUser: info.editTable}">{{info.userDateInfo}}</td>
+				<td><button class="btn btn-primary" ng-click="removeUserinfo($index)" title="Delete"><span class="glyphicon glyphicon-trash"></span></button></td>
+				<td><button class="btn btn-primary" ng-click="editUserinfo($index, true)"><span class="glyphicon glyphicon-edit"></span></button></td>
+				<td><button class="btn btn-primary" ng-click="editUserinfo($index, false)"><span class="glyphicon glyphicon-saved"></span></button></td>
+			</tr>
+		</table>
 	</div>
 	<div ng-show="tab ===2">{{tab}}</div>
 	<div ng-show="tab ===3">{{tab}}</div>
 </div>
-<script>
 
-
-</script>
