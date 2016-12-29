@@ -222,6 +222,18 @@ div.core {
 .right{
     float: right;
 }
+.inner-addon {
+    position: relative;
+    margin: 10px 0;
+    width: auto;
+    float: left;
+}
+.inner-addon .glyphicon {
+    right: 0;
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+}
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
 		float:none !important;
