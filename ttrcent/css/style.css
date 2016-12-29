@@ -214,7 +214,13 @@ input#mydate-user {
     visibility: collapse;
 }
 .editUser {
-    border: 1px solid #2e6da4;
+    border: 3px solid #337ab7 !important;
+}
+div.core {
+    z-index: 1 !important;
+} 
+.right{
+    float: right;
 }
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{

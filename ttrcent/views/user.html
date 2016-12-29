@@ -1,3 +1,4 @@
+
 <div class="user-menu clearfix">
 	<ul class="nav navbar-nav user-nav" ng-init = "tab = 1">
 		<li >
@@ -44,19 +45,56 @@
 				<th class="col-xs-3">Duration</th>
 				<th class="col-xs-3">Comment</th>
 				<th class="col-xs-3">Date</th>
+				<th colspan="3">Options</th>
 			</thead>
-			<tr ng-repeat="info in informations">
-				<td class="col-xs-3" contenteditable="{{info.editTable}}" ng-class="{editUser: info.editTable}">{{info.Project}}</td>
-				<td class="col-xs-3" contenteditable="{{info.editTable}}" ng-class="{editUser: info.editTable}">{{info.Duration}}</td>
-				<td class="col-xs-3" contenteditable="{{info.editTable}}" ng-class="{editUser: info.editTable}">{{info.Comment}}</td>
-				<td class="col-xs-3" contenteditable="{{info.editTable}}" ng-class="{editUser: info.editTable}">{{info.userDateInfo}}</td>
-				<td><button class="btn btn-primary" ng-click="removeUserinfo($index)" title="Delete"><span class="glyphicon glyphicon-trash"></span></button></td>
-				<td><button class="btn btn-primary" ng-click="editUserinfo($index, true)"><span class="glyphicon glyphicon-edit"></span></button></td>
-				<td><button class="btn btn-primary" ng-click="editUserinfo($index, false)"><span class="glyphicon glyphicon-saved"></span></button></td>
+			<tr ng-repeat="info in informations" ng-class="{editUser: info.editTable}">
+				<td class="col-xs-3" contenteditable="{{info.editTable}}">{{info.Project}}</td>
+				<td class="col-xs-3" contenteditable="{{info.editTable}}">{{info.Duration}}</td>
+				<td class="col-xs-3" contenteditable="{{info.editTable}}">{{info.Comment}}</td>
+				<td class="col-xs-3" contenteditable="{{info.editTable}}">{{info.userDateInfo}}</td>
+				<td><button class="btn btn-primary" ng-click="toggleDeleteModal($index,'Delete')" title="Delete"><span class="glyphicon glyphicon-trash"></span></button></td>
+				<td><button class="btn btn-primary" ng-click="toggleModal($index, 'Edit Form')"><span class="glyphicon glyphicon-edit"></span></button></td>
+				<!-- <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-edit"></span></button></td> -->
 			</tr>
 		</table>
+		<modal visible="showModal">
+			<div class="row">
+				<div class="col-md-6">
+					<form name="userForm">
+					  <div class="form-group">
+					    <label for="exampleSelect2">Project</label>
+				    	<select class="form-control" ng-model="editProjectInfo" ng-options="editProjectInfo.name for editProjectInfo in editProjectInfos">
+				  			<option value="">Select Project</option>
+				  		</select>
+					    
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputEmail1">Duration</label>
+		    			<input type="number" class="form-control" ng-model="editduration" placeholder="Enter Duration"/>
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleTextarea">Comment</label>
+					    <textarea class="form-control"  rows="3" ng-model="editComment"></textarea>
+					  </div>
+					  <button type="" class="btn btn-primary" ng-click="editAlert()">Save</button>
+					</form>
+				</div>
+				<!-- <div class="col-md-6">
+					<calender></calender>
+				</div> -->
+			</div>
+		</modal>
+		<modal visible="deleteModal">
+			Are you sure want to delete ?
+			<div class="right">
+			<button ng-click="removeUserinfo()" class="btn btn-default">Delete</button>
+			<button ng-click="toggleDeleteModal(-1,'Delete Form')" class="btn btn-default">Cancel</button>
+			</div>
+		</modal>  
 	</div>
 	<div ng-show="tab ===2">{{tab}}</div>
 	<div ng-show="tab ===3">{{tab}}</div>
 </div>
+
+
 
