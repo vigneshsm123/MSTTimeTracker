@@ -24,13 +24,25 @@
 
 
 app.controller('userController', function($scope, $rootScope) {
+
+		$scope.showModal = false;
+	    $scope.buttonClicked = "";
+	    $scope.toggleModal = function(index, btnClicked){
+	        $scope.buttonClicked = btnClicked;
+	        $scope.showModal = !$scope.showModal;
+	    };
 		// create a message to display in our view
 		$scope.userProjects = [{name: 'Fun Project'}, {name: 'NFDN'}];
+		$scope.editProjectInfos = [{name: 'Fun Project'}, {name: 'NFDN'}];
 		$scope.duration = 1;
+		$scope.editduration = 1;
 		$scope.userComment = null;
 		$scope.userProject = null;
+		$scope.editComment = null;
+		$scope.editProjectInfo = null;
 		$scope.informations =[];
 		$scope.myAlert = function(){
+			console.log('i called');
 			if ($scope.userComment === null) {
 				alert('fill the comment box');
 			}
@@ -63,10 +75,51 @@ app.controller('userController', function($scope, $rootScope) {
 				$scope.userTable = false;
 			}
 		}
-
 		$scope.editUserinfo = function(index, x) {
 			$scope.informations[index].editTable = x;
 		}
+		$scope.editAlert = function(){
+			console.log('i also called');
+			if ($scope.editComment === null) {
+				alert('fill the comment box');
+			}
+ 			if ($scope.editProjectInfo === null) {
+ 				alert('Please select the project');
+ 			}
+		}
+		$scope.$watch('editduration', function(newvalue, oldvalue){
+			if($scope.editduration > 24) {
+				$scope.editduration = 24;
+				alert("Please enter the duration between the range of 1-24 hours");
+			}
+			else if($scope.editduration < 1) {
+				$scope.editduration = 1;
+				alert("Please enter the duration between the range of 1-24 hours");
+				console.log($scope.userDate);
+			}
+		});
+
+
+		// Delete Table options
+			$scope.deleteIndex;
+			$scope.deleteModal = false;
+			$scope.toggleDeleteModal = function(index,str){
+				if(index !=-1){
+					$scope.deleteIndex = index;
+				}                                           
+				$scope.buttonClicked = str;
+				$scope.deleteModal = !$scope.deleteModal;
+			};
+			$scope.removeUserinfo = function() {
+				var index = $scope.deleteIndex;
+				$scope.informations.splice(index, 1);
+				console.log($scope.informations.length);
+				if($scope.informations.length < 1) {
+		            $scope.userTable = false;
+				}
+				$scope.deleteModal = !$scope.deleteModal;
+			}
+
 	}); 
 	
 app.directive('calender',  ['$rootScope', function($rootScope) {
@@ -97,6 +150,53 @@ return {
        }
     };
 }]);
+
+// user table edit directive
+
+    app.directive('modal', function () {
+    return {
+      template: '<div class="modal fade">' + 
+          '<div class="modal-dialog">' + 
+            '<div class="modal-content">' + 
+              '<div class="modal-header">' + 
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + 
+                '<h4 class="modal-title">{{ buttonClicked }} clicked!!</h4>' + 
+              '</div>' + 
+              '<div class="modal-body clearfix" ng-transclude></div>' + 
+            '</div>' + 
+          '</div>' + 
+        '</div>',
+      restrict: 'E',
+      transclude: true,
+      replace:true,
+      scope:true,
+      // scope: {
+      //       ngModel: "=",
+      //   },
+      link: function postLink(scope, element, attrs) {
+          scope.$watch(attrs.visible, function(value){
+          if(value == true)
+            $(element).modal('show');
+          else
+            $(element).modal('hide');
+        });
+
+        $(element).on('shown.bs.modal', function(){
+          scope.$apply(function(){
+            scope.$parent[attrs.visible] = true;
+          });
+        });
+
+        $(element).on('hidden.bs.modal', function(){
+          scope.$apply(function(){
+            scope.$parent[attrs.visible] = false;
+          });
+        });
+      }
+    };
+  });
+
+
 
 })();
 
