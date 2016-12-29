@@ -27,26 +27,33 @@ app.controller('userController', function($scope, $rootScope) {
 
 		$scope.showModal = false;
 	    $scope.buttonClicked = "";
+		
+		$scope.editIndex = null;
 	    $scope.toggleModal = function(index, btnClicked){
 	        $scope.buttonClicked = btnClicked;
 	        $scope.showModal = !$scope.showModal;
+			$scope.editIndex = index;
+			
+			$scope.editProjectInfo = { name: $scope.informations[$scope.editIndex].Project};
+			$scope.editduration = $scope.informations[$scope.editIndex].Duration;
+			$scope.editComment= $scope.informations[$scope.editIndex].Comment
+			$scope.editDate=$scope.informations[$scope.editIndex].userDateInfo;
+			
 	    };
 		// create a message to display in our view
 		$scope.userProjects = [{name: 'Fun Project'}, {name: 'NFDN'}];
 		$scope.editProjectInfos = [{name: 'Fun Project'}, {name: 'NFDN'}];
 		$scope.duration = 1;
-		$scope.editduration = 1;
 		$scope.userComment = null;
 		$scope.userProject = null;
-		$scope.editComment = null;
-		$scope.editProjectInfo = null;
 		$scope.informations =[];
+		
 		$scope.myAlert = function(){
 			console.log('i called');
 			if ($scope.userComment === null) {
 				alert('fill the comment box');
 			}
- 			if ($scope.userProject === null) {
+ 			else if ($scope.userProject === null) {
  				alert('Please select the project');
  			}
 			else {
@@ -86,6 +93,13 @@ app.controller('userController', function($scope, $rootScope) {
  			if ($scope.editProjectInfo === null) {
  				alert('Please select the project');
  			}
+			$scope.showModal = !$scope.showModal;
+			$('.modal,.modal-backdrop').hide();
+			
+			$scope.informations[$scope.editIndex].Project = $scope.editProjectInfo.name;
+			$scope.informations[$scope.editIndex].Duration = $scope.editduration;
+			$scope.informations[$scope.editIndex].Comment = $scope.editComment;
+			$scope.informations[$scope.editIndex].userDateInfo = $scope.editDate;
 		}
 		$scope.$watch('editduration', function(newvalue, oldvalue){
 			if($scope.editduration > 24) {
@@ -119,7 +133,8 @@ app.controller('userController', function($scope, $rootScope) {
 				}
 				$scope.deleteModal = !$scope.deleteModal;
 			}
-
+			$scope.users = [{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'}];
 	}); 
 	
 app.directive('calender',  ['$rootScope', function($rootScope) {
