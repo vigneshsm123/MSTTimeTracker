@@ -234,12 +234,15 @@ div.core {
     padding: 10px;
     pointer-events: none;
 }
+<<<<<<< HEAD
 .row-addon {
     position: relative;
     margin: 10px 0;
     width: auto;
     float: right;
 }
+=======
+>>>>>>> origin/master
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
 		float:none !important;

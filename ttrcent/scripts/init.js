@@ -134,12 +134,16 @@ app.controller('userController', function($scope, $rootScope) {
 				$scope.deleteModal = !$scope.deleteModal;
 			}
 			$scope.users = [{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+<<<<<<< HEAD
 			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
 			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
 			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
 			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
 			{project: 'winter', Description: 'ggg'}];
 			$scope.rowLimits = [10,25,50,100];
+=======
+			{project: 'winter', Description: 'ggg'}];
+>>>>>>> origin/master
 	}); 
 	
 app.directive('calender',  ['$rootScope', function($rootScope) {

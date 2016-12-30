@@ -115,17 +115,24 @@
       <i class="glyphicon glyphicon-search"></i>
       <input type="text" class="form-control" placeholder="Search"  ng-model="test"/>
     </div>
+<<<<<<< HEAD
     <div class="row-addon right-addon">
     	<select class="form-control" ng-model="rowLimit" ng-options="rowLimit for rowLimit in rowLimits">
   			<option value="">Select Row Limits</option>
   		</select>
     </div>
+=======
+>>>>>>> origin/master
 		<table ng-table="usersTable" class="table table-bordered table-responsive table-striped">
 		<thead>
 			<th>Project</th>
 			<th>Description</th>
 		</thead>
+<<<<<<< HEAD
 		   <tr ng-repeat="user in users | filter: test | limitTo:rowLimit">
+=======
+		   <tr ng-repeat="user in users | filter: test">
+>>>>>>> origin/master
 		       <td data-title="'Id'" class="col-xs-6">
 		           {{user.project}}
 		       </td>
