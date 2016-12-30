@@ -23,7 +23,7 @@
 	// user controller
 
 
-app.controller('userController', function($scope, $rootScope) {
+app.controller('userController', function($scope, $rootScope, $filter) {
 
 		$scope.showModal = false;
 	    $scope.buttonClicked = "";
@@ -134,18 +134,58 @@ app.controller('userController', function($scope, $rootScope) {
 				$scope.deleteModal = !$scope.deleteModal;
 			}
 			$scope.users = [{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-<<<<<<< HEAD
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'}, {project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'}, {project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'}, {project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
+			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
 			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
 			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
 			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
 			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
 			{project: 'winter', Description: 'ggg'}];
 			$scope.rowLimits = [10,25,50,100];
-=======
-			{project: 'winter', Description: 'ggg'}];
->>>>>>> origin/master
+
+			//pagination
+
+			$scope.numberOfPages=function(){
+				return Math.ceil($scope.getData().length/$scope.rowLimit);                
+			}
+			$scope.getData = function () {
+			  // needed for the pagination calc
+			  // https://docs.angularjs.org/api/ng/filter/filter
+			  return $filter('filter')($scope.users, $scope.test)			 
+			} 
+			// Report Controller
+
+			$scope.reportCheck = false;
+			$scope.selectAll = function(){
+				$scope.reportCheck = !$scope.reportCheck;
+			}
+
+			$scope.proTimePeriods = ["This Month", "Last Month", "This Week", "Last Week"]
 	}); 
-	
+
+	// pagination custom filter
+
+	app.filter('startFrom', function() {
+	    return function(input, start) {
+	        start = +start; //parse to int
+	        return input.slice(start);
+	    }
+	}); 
+
+
+
 app.directive('calender',  ['$rootScope', function($rootScope) {
 	var date = new Date();
 	var currDate = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
