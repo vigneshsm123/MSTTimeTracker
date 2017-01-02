@@ -136,10 +136,21 @@ angular.module('jkuri.datepicker', [])
 					scope.dateValue = newValue;
 				}
 			};
-
+			
+			//modified
+			scope.disDatePicker = false;
+			if(typeof(scope.$parent.disDatePicker) != 'undefined'){
+				scope.disDatePicker = scope.$parent.disDatePicker;
+				scope.$parent.$watch('proTimePeriod', function(newvalue, oldvalue){
+					if(newvalue != null && typeof(newvalue) != 'undefined')
+						scope.disDatePicker = true;
+					else
+						scope.disDatePicker = false;
+				});
+			}			
 		},
 		template: 
-		'<div><input type="text" ng-focus="showCalendar()" ng-value="viewValue" class="ng-datepicker-input form-control" placeholder="{{ placeholder }}"></div>' +
+		'<div><input type="text" ng-focus="showCalendar()" ng-value="viewValue" class="ng-datepicker-input form-control" placeholder="{{ placeholder }}" ng-disabled="disDatePicker"></div>' +
 		'<div class="ng-datepicker" ng-show="calendarOpened">' +
 		'  <div class="controls">' +
 		'    <div class="left">' +

@@ -243,10 +243,10 @@ div.core {
 .btn-report-project {
     margin-right: 10px;
 }
-.fa{
+.controls .fa{
 	color: #337ab7 !important;
 	
-}
+} 
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
 		float:none !important;

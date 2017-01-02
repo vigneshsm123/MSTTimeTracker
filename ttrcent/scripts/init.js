@@ -2,7 +2,8 @@
 	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker']);
 	app.config(['$routeProvider',function($routeProvider) {
 		$routeProvider.when('/', {
-			templateUrl : "views/login.html"
+			templateUrl : "views/login.html",
+			controller: "LoginController"
 		})
 		
 		.when('/user', {
@@ -20,9 +21,51 @@
 
 
 
-	// user controller
 
+app.factory('loginService', function($http, $window){
+	return{
+	   loginAuthentication : function(username,password) {
+		   var upColl = [];
+		   $http({
+			url:"data/loginAuth.json",
+			method:"GET"		
+			}).then(function(resp){
+				upColl= resp.data;
+				for(x in upColl){
+					if(upColl[x].username == username)
+						break;
+				}
+				if(upColl[x].password == password){
+					$window.location="#/"+upColl[x].role;
+					return true;
+				}	else{
+					$window.location="#/";
+					return false;
+				}	
+			},function(resp){
+				return false;
+			});
+		}		
+	};
+});
 
+//login controller
+app.controller('LoginController', function($scope, $rootScope, $window, $http, loginService) {
+	$scope.username = '';
+	$scope.password = '';	
+	$scope.message='';	
+	$scope.login = function(){	
+		var res  = loginService.loginAuthentication($scope.username,$scope.password)
+		if(!res){
+			$scope.message='Wrong Username & Passsword';
+			$scope.username = '';
+			$scope.password = '';
+		}	
+	}	
+});
+	
+	
+// user controller
 app.controller('userController', function($scope, $rootScope, $filter, $http) {
 
 		$scope.showModal = false;
@@ -168,7 +211,8 @@ app.controller('userController', function($scope, $rootScope, $filter, $http) {
 				$scope.reportCheck = !$scope.reportCheck;
 			}
 
-			$scope.proTimePeriods = ["This Month", "Last Month", "This Week", "Last Week"]
+			$scope.proTimePeriods = ["This Month", "Last Month", "This Week", "Last Week"];
+			$scope.disDatePicker = false;
 	}); 
 
 	// pagination custom filter
