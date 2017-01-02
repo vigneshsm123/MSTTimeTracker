@@ -214,7 +214,38 @@ input#mydate-user {
     visibility: collapse;
 }
 .editUser {
-    border: 1px solid #2e6da4;
+    border: 3px solid #337ab7 !important;
+}
+div.core {
+    z-index: 1 !important;
+} 
+.right{
+    float: right;
+}
+.inner-addon {
+    position: relative;
+    margin: 10px 0;
+    width: auto;
+    float: left;
+}
+.inner-addon .glyphicon {
+    right: 0;
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+}
+.row-addon {
+    position: relative;
+    margin: 10px 0;
+    width: auto;
+    float: right;
+}
+.btn-report-project {
+    margin-right: 10px;
+}
+.fa{
+	color: #337ab7 !important;
+	
 }
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
