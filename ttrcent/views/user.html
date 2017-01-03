@@ -11,6 +11,16 @@
 			<a href ng-click="tab = 3">Projects</a>
 		</li>
 	</ul>
+	<div class="pull-right profile">
+		<ul class="nav nav-tabs">
+		    <li class="dropdown">
+		      <a class="dropdown-toggle" data-toggle="dropdown">Hi {{userName}} <span class="caret"></span></a>
+		      <ul class="dropdown-menu">
+		        <li><a href="#/">Log Out</a></li>                    
+		      </ul>
+		    </li>
+	  </ul>
+	</div>
 </div>
 <div class="user-container">
 	<div ng-show="tab === 1">
@@ -56,9 +66,6 @@
 				<td><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="toggleModal($index, 'Edit Form')"><span class="glyphicon glyphicon-edit"></span></button></td>
 			</tr>
 		</table>
-		
-		
-		
 		<div class="modal fade" id="myModal" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -80,13 +87,11 @@
 						    <label for="exampleInputEmail1">Duration</label>
 			    			<input type="number" class="form-control" ng-model="editduration" placeholder="Enter Duration"/>
 						  </div>
-						  <!-- <div class="input-group date clearfix">
-						    <label for="">Date</label>
-							<input type="text" classl="form-control" value="" ng-model="editDate">
-							<div class="input-group-addon">
-								<span class="glyphicon glyphicon-th"></span>
+							<div class="form-group">
+							  <label for="">Date</label>
+				    			<ng-datepicker ng-model="editDate" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
+								</ng-datepicker>
 							</div>
-						</div> -->
 						  <div class="form-group">
 						    <label for="exampleTextarea">Comment</label>
 						    <textarea class="form-control"  rows="3" ng-model="editComment"></textarea>
@@ -111,33 +116,88 @@
 	</div>
 	<div ng-show="tab ===2">
 		<div class="row">
-			<div class="col-md-6">
 				<form name="userForm">
-					<div class="form-group">
-						<label class="control-label">Project</label>
-						<div class="panel panel-group">
-							<div class="panel panel-default">
-						      <div class="panel-heading" role="group"><button type="button"  ng-click = "selectAll()" class="btn btn-primary btn-report-project">Selectall / Deselectall</button><!-- <button type="button" class="btn btn-primary btn-report-project" ng-click = "selectAll()"></button> --></div>
-						      <div class="panel-body">
-						      	<ul class="list-group row">
-						      		<li class="list-group-item col-xs-6" ng-repeat="userProject in userProjects">
-							      		<div class="checkbox">
-									      <label><input type="checkbox" value="" ng-checked="reportCheck">{{userProject.name}}</label>
-									    </div>
-								    </li>
-						      	</ul>
-						      </div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label">Project</label>
+							<div class="panel panel-group">
+								<div class="panel panel-default">
+							      <div class="panel-heading" role="group"><button type="button"  ng-click = "selectAll()" class="btn btn-primary btn-report-project">Selectall / Deselectall</button><!-- <button type="button" class="btn btn-primary btn-report-project" ng-click = "selectAll()"></button> --></div>
+							      <div class="panel-body">
+							      	<ul class="list-group row">
+							      		<li class="list-group-item col-xs-6" ng-repeat="userProject in userProjects">
+								      		<div class="checkbox">
+										      <label><input type="checkbox" value="" ng-checked="reportCheck">{{userProject.name}}</label>
+										    </div>
+									    </li>
+							      	</ul>
+							      </div>
+							    </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Select Time Period</label>
+							<select class="form-control" ng-model="proTimePeriod" ng-options="proTimePeriod for proTimePeriod in proTimePeriods">
+					  			<option value="">Select Time Period</option>
+					  		</select>
+						</div>
+						<div class="form-group clearfix">
+							<label class="col-sm-12 control-label">or Set Dates</label>
+							<div class="col-md-6">
+								<ng-datepicker ng-model="startReportDate" first-week-day-sunday="true" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
+									</ng-datepicker>
+							</div>
+							<div class="col-md-6">
+								<ng-datepicker ng-model="endReportDate" first-week-day-sunday="true" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
+								</ng-datepicker>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Show fields</label>
+							<ul class="list-group">
+					      		<li class="list-group-item col-xs-4">
+						      		<div class="checkbox">
+								      <label><input type="checkbox" value="">Project</label>
+								    </div>
+							    </li>
+							    <li class="list-group-item col-xs-4">
+						      		<div class="checkbox">
+								      <label><input type="checkbox" value="">Duration</label>
+								    </div>
+							    </li>
+							    <li class="list-group-item col-xs-4">
+						      		<div class="checkbox">
+								      <label><input type="checkbox" value="">Comment</label>
+								    </div>
+							    </li>
+					      	</ul>
+						</div>	
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Group By</label>
+							<select class="form-control" ng-model="groupOption" ng-options="groupOption for groupOption in groupOptions">
+					  			<option value="">--No Grouping</option>
+					  		</select>
+						</div>
+						<div class="form-group">
+							<div class="checkbox">
+						      <label><input type="checkbox" value="" ng-disabled="groupCheck">Totals Only</label>
 						    </div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-12 control-label">Select Time Period</label>
-						<select class="form-control" ng-model="proTimePeriod" ng-options="proTimePeriod for proTimePeriod in proTimePeriods">
-				  			<option value="">Select Time Period</option>
-				  		</select>
-					</div>
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Save as Favourate</label>
+							<div class="input-group">
+								<input type="text"  class="form-control" placeholder="Enter Favorite" maxlength="30" value="">
+								<span class="input-group-btn">
+									<span>
+										<input type="submit"  value="Save" class="btn btn-primary">
+									</span>
+								</span>
+							</div>
+						</div>
+					</div>				
 		  		</form>
-	  		</div>
 		</div>
 	</div>
 	<div ng-show="tab ===3">

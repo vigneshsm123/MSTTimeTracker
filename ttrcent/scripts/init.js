@@ -1,8 +1,9 @@
 (function () {
-	var app = angular.module('myApp', ['ngRoute']);
+	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker']);
 	app.config(['$routeProvider',function($routeProvider) {
 		$routeProvider.when('/', {
-			templateUrl : "views/login.html"
+			templateUrl : "views/login.html",
+			controller: "LoginController"
 		})
 		
 		.when('/user', {
@@ -20,11 +21,58 @@
 
 
 
-	// user controller
 
+app.factory('loginService', function($http, $window){
+	return{
+	   loginAuthentication : function(username,password) {
+		   var upColl = [];
+		   $http({
+			url:"data/loginAuth.json",
+			method:"GET"		
+			}).then(function(resp){
+				upColl= resp.data;
+				for(x in upColl){
+					if(upColl[x].username == username)
+						break;
+				}
+				if(upColl[x].password == password){
+					localStorage.setItem("user", upColl[x].username);
+					$window.location="#/"+upColl[x].role;
+					return true;
+				}	else{
+					$window.location="#/";
+					return false;
+				}	
+			},function(resp){
+				return false;
+			});
+		}		
+	};
+});
 
-app.controller('userController', function($scope, $rootScope, $filter) {
-
+//login controller
+app.controller('LoginController', function($scope, $rootScope, $window, $http, loginService) {
+   $scope.username = '';
+   $scope.password = '';    
+   $scope.message='';        
+   $scope.login = function(){
+          if($scope.username !='' && $scope.password !=''){
+             var res  = loginService.loginAuthentication($scope.username,$scope.password)
+             if(!res){
+                $scope.message='Wrong Username & Passsword';
+                $scope.username = '';
+                $scope.password = '';
+             }
+          }                            
+          else
+         	$scope.message='Please enter username & password';
+	   }
+	});
+	
+	
+// user controller
+app.controller('userController', function($scope, $rootScope, $filter, $http) {
+	$scope.userName = localStorage.user;
 		$scope.showModal = false;
 	    $scope.buttonClicked = "";
 		
@@ -133,26 +181,22 @@ app.controller('userController', function($scope, $rootScope, $filter) {
 				}
 				$scope.deleteModal = !$scope.deleteModal;
 			}
-			$scope.users = [{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'}, {project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'}, {project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'}, {project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'},{project : 'Fun Project', Description: 'dd'}, {project: 'NFDN', Description: 'shkjhs'}, {project: 'apollo', Description: 'mm'}, 
-			{project: 'winter', Description: 'ggg'}];
+	
+			//GET Projects Data
+			$scope.users = [];
+			$http({
+				url:'data/projects.json',
+				method:'GET'
+			}).then(function(resp){
+				//success method
+				$scope.users = resp.data;
+				console.log(resp);
+			},function(resp){
+				//error method
+				console.log('error call');
+				console.log(resp);
+			});
+			
 			$scope.rowLimits = [10,25,50,100];
 
 			//pagination
@@ -172,15 +216,31 @@ app.controller('userController', function($scope, $rootScope, $filter) {
 				$scope.reportCheck = !$scope.reportCheck;
 			}
 
-			$scope.proTimePeriods = ["This Month", "Last Month", "This Week", "Last Week"]
+			$scope.proTimePeriods = ["This Month", "Last Month", "This Week", "Last Week"];
+			$scope.disDatePicker = false;
+
+			//group options
+			$scope.groupOptions = ["Date", "Project"];
+
+			$scope.groupCheck = false;
+			if(typeof($scope.groupCheck) != 'undefined'){
+				$scope.$watch('groupOption', function(newvalue, oldvalue){
+					if(newvalue != null && typeof(newvalue) != 'undefined')
+						$scope.groupCheck  = false;
+					else
+						$scope.groupCheck  = true;
+				});
+			}		
 	}); 
 
 	// pagination custom filter
 
 	app.filter('startFrom', function() {
 	    return function(input, start) {
-	        start = +start; //parse to int
-	        return input.slice(start);
+			if(typeof(input)!='undefined'){
+				 start = +start; //parse to int
+				 return input.slice(start);
+			}	       
 	    }
 	}); 
 
@@ -188,7 +248,7 @@ app.controller('userController', function($scope, $rootScope, $filter) {
 
 app.directive('calender',  ['$rootScope', function($rootScope) {
 	var date = new Date();
-	var currDate = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
+	var currDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
 	$rootScope.userCalDate = currDate;
 return {
     restrict: 'EA',
@@ -206,7 +266,7 @@ return {
         //so you can bind to it with jQuery
         //OR you could use that to find the element inside that needs the plugin      
 		$('.user-cal').glDatePicker({showAlways:true, onClick: function(target, cell, date, data) {
-			var selDate = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
+			var selDate = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
 			target.val(selDate);
 			$rootScope.userCalDate = selDate;
 		} });
