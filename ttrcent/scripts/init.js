@@ -2,24 +2,36 @@
 (function () {
 	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker']);
 	app.config(['$routeProvider',function($routeProvider) {
-		$routeProvider.when('/', {
-			templateUrl : "views/login.html",
-			controller: "LoginController"
-		})
-		
-		.when('/user', {
-			templateUrl : "views/user.html",
-			controller: "userController"
+      $routeProvider.when('/', {
+                     templateUrl : "views/login.html",
+                     controller: "LoginController",
+                     authenticated:false
+      })
+     
+      .when('/user', {
+                     templateUrl : "views/user.html",
+                     controller: "userController",
+                     authenticated:true
 
-		})
-		.when('/404', {
-			templateUrl : "views/404.html"
-		})
-		.otherwise({
-			redirectTo : "/404"
-		});
+      })
+      .when('/404', {
+                     templateUrl : "views/404.html",
+                     authenticated:false
+      })
+      .otherwise({
+                     redirectTo : "/404",
+                     authenticated:false
+      });
 }]);
-
+app.run(function($rootScope, $location){
+	$rootScope.$on('$routeChangeStart',function(event, next, current){
+		if(next.$$route.authenticated == true && (typeof (sessionStorage.user) == 'undefined' || sessionStorage.user == '')){
+			event.preventDefault();
+			$location.path('/');
+			console.log(sessionStorage.user);
+		}    
+	});
+});
 
 app.factory('loginService', function($http, $window){
 	return{
@@ -35,7 +47,7 @@ app.factory('loginService', function($http, $window){
 						break;
 				}
 				if(upColl[x].password == password){
-					localStorage.setItem("user", upColl[x].username);
+					sessionStorage.setItem("user", upColl[x].username);
 					$window.location="#/"+upColl[x].role;
 					return true;
 				}	else{
@@ -45,7 +57,11 @@ app.factory('loginService', function($http, $window){
 			},function(resp){
 				return false;
 			});
-		}		
+		},	
+		logout: function(){
+			sessionStorage.user = '';
+			$window.location="#/";
+		}	
 	};
 });
 
@@ -70,10 +86,17 @@ app.controller('LoginController', function($scope, $rootScope, $window, $http, l
 	
 	
 // user controller
-app.controller('userController', function($scope, $rootScope, $filter, $http) {
+app.controller('userController', function($scope, $rootScope, $filter, $http, loginService) {
+
+	//Roting Service returning function
+		$scope.userLogout = function(){
+			loginService.logout();
+		};
+
 	//Save as favourate function
 	$scope.saveFavourate = null;
 	$scope.favReports = [];
+	$scope.favourateTables =[];
 	$scope.savFav = function(){
 		if($scope.saveFavourate == "" | $scope.saveFavourate == null){
 			alert("Please enter Save as favourate field")
@@ -81,6 +104,8 @@ app.controller('userController', function($scope, $rootScope, $filter, $http) {
 		else{
 			$scope.favReports.push($scope.saveFavourate);
 			$scope.saveFavourate="";
+			$scope.favourateTables.push({favName:'Fun Project', favDuration: 2 , favComment: 'hdhkh'});
+         	console.log($scope.favourateTables);
 		}
 	}	
 
@@ -99,7 +124,7 @@ app.controller('userController', function($scope, $rootScope, $filter, $http) {
      $scope.isProjectSet = function(tabNum){
       return $scope.ProjectTab === tabNum;
     };
-	$scope.userName = localStorage.user;
+	$scope.userName = sessionStorage.user;
 		$scope.showModal = false;
 	    $scope.buttonClicked = "";
 		

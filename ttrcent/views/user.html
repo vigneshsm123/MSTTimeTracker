@@ -16,7 +16,7 @@
 		    <li class="dropdown">
 		      <a class="dropdown-toggle" data-toggle="dropdown">Hi {{userName}} <span class="caret"></span></a>
 		      <ul class="dropdown-menu">
-		        <li><a href="#/">Log Out</a></li>                    
+		        <li><a ng-click="userLogout()">Log Out</a></li>                    
 		      </ul>
 		    </li>
 	  </ul>
@@ -217,6 +217,22 @@
 						<select class="form-control" ng-model="favReport" ng-options="favReport for favReport in favReports">
 				  			<option value="">--Select Favourate Report--</option>
 				  		</select>
+					</div>
+					<div class="form-group">
+						<table class="table table-responsive table-bordered table-striped">
+							<thead>
+								<th>Project</th>
+								<th>Duration</th>
+								<th>Comment</th>
+							</thead>
+							<tbody>
+								<tr ng-repeat= "favourateTable in favourateTables">
+									<td>{{favourateTable.favName}}</td>
+									<td>{{favourateTable.favDuration}}</td>
+									<td>{{favourateTable.favComment}}</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</form>
