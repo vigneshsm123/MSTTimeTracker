@@ -1,14 +1,14 @@
 
 <div class="user-menu clearfix">
-	<ul class="nav navbar-nav user-nav" ng-init = "tab = 1">
-		<li >
-			<a href ng-click = "tab = 1">Time</a>
+	<ul class="nav navbar-nav user-nav">
+		<li ng-class="{ active: isSet(1) }">
+			<a href ng-click="setTab(1)">Time</a>
 		</li>
-		<li  >
-			<a href ng-click = "tab = 2">Reports</a>
+		<li  ng-class="{ active: isSet(2) }">
+			<a href ng-click="setTab(2)">Reports</a>
 		</li>
-		<li >
-			<a href ng-click="tab = 3">Projects</a>
+		<li ng-class="{ active: isSet(3) }">
+			<a href ng-click="setTab(3)">Projects</a>
 		</li>
 	</ul>
 	<div class="pull-right profile">
@@ -23,7 +23,7 @@
 	</div>
 </div>
 <div class="user-container">
-	<div ng-show="tab === 1">
+	<div ng-show="isSet(1)">
 		<div class="row">
 			<div class="col-md-6">
 				<form name="userForm">
@@ -114,8 +114,18 @@
 			</div>
 		</modal>  
 	</div>
-	<div ng-show="tab ===2">
+	<div ng-show="isSet(2)">
 		<div class="row">
+			<ul class="nav navbar-nav user-nav">
+				<li ng-class="{ active: isProjectSet(1) }">
+					<a href ng-click="setProjectTab(1)">Generate As Fresh Report</a>
+				</li>
+				<li  ng-class="{ active: isProjectSet(2) }">
+					<a href ng-click="setProjectTab(2)">Generate As Favourate</a>
+				</li>
+			</ul>
+		</div>
+		<div class="row" ng-show="isProjectSet(1)">
 				<form name="userForm">
 					<div class="col-md-6">
 						<div class="form-group">
@@ -182,16 +192,16 @@
 						</div>
 						<div class="form-group">
 							<div class="checkbox">
-						      <label><input type="checkbox" value="" ng-disabled="groupCheck">Totals Only</label>
+						      <label><input type="checkbox" value="" ng-disabled="groupCheck" ng-checked="!groupCheck">Totals Only</label>
 						    </div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-12 control-label">Save as Favourate</label>
 							<div class="input-group">
-								<input type="text"  class="form-control" placeholder="Enter Favorite" maxlength="30" value="">
+								<input type="text"  class="form-control" ng-model="saveFavourate" placeholder="Enter Favorite" maxlength="30" value="">
 								<span class="input-group-btn">
 									<span>
-										<input type="submit"  value="Save" class="btn btn-primary">
+										<input type="submit"  value="Save" class="btn btn-primary"  ng-click="savFav();"/>
 									</span>
 								</span>
 							</div>
@@ -199,8 +209,20 @@
 					</div>				
 		  		</form>
 		</div>
+		<div class="row" ng-show="isProjectSet(2)">
+			<form name="userForm">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-sm-12 control-label">Favourate Report</label>
+						<select class="form-control" ng-model="favReport" ng-options="favReport for favReport in favReports">
+				  			<option value="">--Select Favourate Report--</option>
+				  		</select>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
-	<div ng-show="tab ===3">
+	<div ng-show="isSet(3)">
 	<div class="inner-addon left-addon">
       <i class="glyphicon glyphicon-search"></i>
       <input type="text" class="form-control" placeholder="Search"  ng-model="test"/>

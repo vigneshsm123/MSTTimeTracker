@@ -1,3 +1,4 @@
+
 (function () {
 	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker']);
 	app.config(['$routeProvider',function($routeProvider) {
@@ -18,8 +19,6 @@
 			redirectTo : "/404"
 		});
 }]);
-
-
 
 
 app.factory('loginService', function($http, $window){
@@ -72,6 +71,34 @@ app.controller('LoginController', function($scope, $rootScope, $window, $http, l
 	
 // user controller
 app.controller('userController', function($scope, $rootScope, $filter, $http) {
+	//Save as favourate function
+	$scope.saveFavourate = null;
+	$scope.favReports = [];
+	$scope.savFav = function(){
+		if($scope.saveFavourate == "" | $scope.saveFavourate == null){
+			alert("Please enter Save as favourate field")
+		}
+		else{
+			$scope.favReports.push($scope.saveFavourate);
+			$scope.saveFavourate="";
+		}
+	}	
+
+	//user Tab function
+	$scope.tab = 1;
+    $scope.setTab = function(newTab){
+      $scope.tab = newTab;
+    };
+    $scope.isSet = function(tabNum){
+      return $scope.tab === tabNum;
+    };
+    $scope.ProjectTab = 1;
+    $scope.setProjectTab = function(newTab){
+    	$scope.ProjectTab = newTab;
+    }
+     $scope.isProjectSet = function(tabNum){
+      return $scope.ProjectTab === tabNum;
+    };
 	$scope.userName = localStorage.user;
 		$scope.showModal = false;
 	    $scope.buttonClicked = "";
@@ -84,9 +111,9 @@ app.controller('userController', function($scope, $rootScope, $filter, $http) {
 			
 			$scope.editProjectInfo = { name: $scope.informations[$scope.editIndex].Project};
 			$scope.editduration = $scope.informations[$scope.editIndex].Duration;
-			$scope.editComment= $scope.informations[$scope.editIndex].Comment
-			$scope.editDate=$scope.informations[$scope.editIndex].userDateInfo;
-			
+			$scope.editComment= $scope.informations[$scope.editIndex].Comment;
+			var tempDate  = $scope.informations[$scope.editIndex].userDateInfo.split('/');
+			$scope.editDate = new Date(tempDate[2]+'-'+tempDate[1]+'-'+ tempDate[0]);
 	    };
 		// create a message to display in our view
 		$scope.userProjects = [{name: 'Fun Project'}, {name: 'NFDN'}];
@@ -147,7 +174,9 @@ app.controller('userController', function($scope, $rootScope, $filter, $http) {
 			$scope.informations[$scope.editIndex].Project = $scope.editProjectInfo.name;
 			$scope.informations[$scope.editIndex].Duration = $scope.editduration;
 			$scope.informations[$scope.editIndex].Comment = $scope.editComment;
-			$scope.informations[$scope.editIndex].userDateInfo = $scope.editDate;
+			if(!angular.isDate($scope.editDate)) {
+				$scope.informations[$scope.editIndex].userDateInfo = $scope.editDate;
+			}
 		}
 		$scope.$watch('editduration', function(newvalue, oldvalue){
 			if($scope.editduration > 24) {
@@ -230,7 +259,10 @@ app.controller('userController', function($scope, $rootScope, $filter, $http) {
 					else
 						$scope.groupCheck  = true;
 				});
-			}		
+			}
+
+			// Save Favourate
+
 	}); 
 
 	// pagination custom filter
