@@ -1,5 +1,6 @@
 
 (function () {
+
 	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker', 'userModule', 'loginModule', 'managerModule', 'adminModule']);
 	app.config(['$routeProvider',function($r) {
       $r.when('/', {
@@ -7,6 +8,7 @@
                      controller: "LoginController",
                      authenticated:false,
 					 role:"none"
+
       })
      
       .when('/user', {
@@ -37,7 +39,7 @@
       .otherwise({
                      redirectTo : "/404",
                      authenticated:false,
-					 role:"none"
+					           role:"none"
       });
 }]);
 app.run(function($rootScope, $location){
@@ -51,7 +53,7 @@ app.run(function($rootScope, $location){
 			event.preventDefault();
 			$location.path('/'+sessionStorage.role);
 			console.log('role mis-fired');
-		}		
+		}	  
 	});
 });
 
@@ -64,7 +66,9 @@ app.factory('loginService', function($http, $window){
 			method:"GET"		
 			}).then(function(resp){
 				upColl= resp.data;
+
 				for(x in upColl){ //use filter- change
+
 					if(upColl[x].username == username)
 						break;
 				}
