@@ -247,6 +247,9 @@ div.core {
 	color: #337ab7 !important;
 	
 } 
+.profile {
+    margin-right: 8%;
+}
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
 		float:none !important;

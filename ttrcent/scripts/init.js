@@ -1,26 +1,59 @@
+
 (function () {
-	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker']);
-	app.config(['$routeProvider',function($routeProvider) {
-		$routeProvider.when('/', {
-			templateUrl : "views/login.html",
-			controller: "LoginController"
-		})
-		
-		.when('/user', {
-			templateUrl : "views/user.html",
-			controller: "userController"
+	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker', 'userModule', 'loginModule', 'managerModule', 'adminModule']);
+	app.config(['$routeProvider',function($r) {
+      $r.when('/', {
+                     templateUrl : "login/views/login.html",
+                     controller: "LoginController",
+                     authenticated:false,
+					 role:"none"
+      })
+     
+      .when('/user', {
+                     templateUrl : "user/views/user.html",
+                     controller: "userController",
+                     authenticated:true,
+					 role:"user"
 
-		})
-		.when('/404', {
-			templateUrl : "views/404.html"
-		})
-		.otherwise({
-			redirectTo : "/404"
-		});
+      })
+	  .when('/manager', {
+                     templateUrl : "manager/views/manager.html",
+                     controller: "managerController",
+                     authenticated:true,
+					 role:"manager"
+
+      })
+	  .when('/admin', {
+                     templateUrl : "admin/views/admin.html",
+                     controller: "adminController",
+                     authenticated:true,
+					 role:"admin"
+      })
+      .when('/404', {
+                     templateUrl : "views/404.html",
+                     authenticated:false,
+					 role:"none"
+      })
+      .otherwise({
+                     redirectTo : "/404",
+                     authenticated:false,
+					 role:"none"
+      });
 }]);
-
-
-
+app.run(function($rootScope, $location){
+	$rootScope.$on('$routeChangeStart',function(event, next, current){		
+		if(next.$$route.authenticated == true && (typeof (sessionStorage.user) == 'undefined' || sessionStorage.user == '')){	
+			event.preventDefault();
+			$location.path('/');
+			console.log(sessionStorage.user);
+		} 
+		if(next.$$route.role !='none' && next.$$route.role != sessionStorage.role){
+			event.preventDefault();
+			$location.path('/'+sessionStorage.role);
+			console.log('role mis-fired');
+		}		
+	});
+});
 
 app.factory('loginService', function($http, $window){
 	return{
@@ -31,11 +64,13 @@ app.factory('loginService', function($http, $window){
 			method:"GET"		
 			}).then(function(resp){
 				upColl= resp.data;
-				for(x in upColl){
+				for(x in upColl){ //use filter- change
 					if(upColl[x].username == username)
 						break;
 				}
 				if(upColl[x].password == password){
+					sessionStorage.setItem("user", upColl[x].username);
+					sessionStorage.setItem("role", upColl[x].role);
 					$window.location="#/"+upColl[x].role;
 					return true;
 				}	else{
@@ -45,175 +80,21 @@ app.factory('loginService', function($http, $window){
 			},function(resp){
 				return false;
 			});
-		}		
+		},	
+		logout: function(){
+			sessionStorage.user = '';
+			sessionStorage.role = '';
+			$window.location="#/";
+		}	
 	};
 });
 
 //login controller
-app.controller('LoginController', function($scope, $rootScope, $window, $http, loginService) {
-	$scope.username = '';
-	$scope.password = '';	
-	$scope.message='';	
-	$scope.login = function(){	
-		var res  = loginService.loginAuthentication($scope.username,$scope.password)
-		if(!res){
-			$scope.message='Wrong Username & Passsword';
-			$scope.username = '';
-			$scope.password = '';
-		}	
-	}	
-});
+
 	
 	
 // user controller
-app.controller('userController', function($scope, $rootScope, $filter, $http) {
 
-		$scope.showModal = false;
-	    $scope.buttonClicked = "";
-		
-		$scope.editIndex = null;
-	    $scope.toggleModal = function(index, btnClicked){
-	        $scope.buttonClicked = btnClicked;
-	        $scope.showModal = !$scope.showModal;
-			$scope.editIndex = index;
-			
-			$scope.editProjectInfo = { name: $scope.informations[$scope.editIndex].Project};
-			$scope.editduration = $scope.informations[$scope.editIndex].Duration;
-			$scope.editComment= $scope.informations[$scope.editIndex].Comment
-			$scope.editDate=$scope.informations[$scope.editIndex].userDateInfo;
-			
-	    };
-		// create a message to display in our view
-		$scope.userProjects = [{name: 'Fun Project'}, {name: 'NFDN'}];
-		$scope.editProjectInfos = [{name: 'Fun Project'}, {name: 'NFDN'}];
-		$scope.duration = 1;
-		$scope.userComment = null;
-		$scope.userProject = null;
-		$scope.informations =[];
-		
-		$scope.myAlert = function(){
-			console.log('i called');
-			if ($scope.userComment === null) {
-				alert('fill the comment box');
-			}
- 			else if ($scope.userProject === null) {
- 				alert('Please select the project');
- 			}
-			else {
-				$scope.userTable = true;
-				$scope.informations.push({ Project: $scope.userProject.name , Duration: $scope.duration , Comment : $scope.userComment, userDateInfo: $rootScope.userCalDate, editTable : false});// [,{ Project: 'NFDN', Duration: '2', Comment : 'DDD'}];
-				$scope.userProject = null;
-				$scope.duration = 1;
-				$scope.userComment = null;
-			}
-		}
-		$scope.$watch('duration', function(newvalue, oldvalue){
-			if($scope.duration > 24) {
-				$scope.duration = 24;
-				alert("Please enter the duration between the range of 1-24 hours");
-			}
-			else if($scope.duration < 1) {
-				$scope.duration = 1;
-				alert("Please enter the duration between the range of 1-24 hours");
-				console.log($scope.userDate);
-			}
-		});
-		$scope.removeUserinfo = function(index) {
-			$scope.informations.splice(index, 1);
-			console.log($scope.informations.length);
-			if($scope.informations.length < 1) {
-				$scope.userTable = false;
-			}
-		}
-		$scope.editUserinfo = function(index, x) {
-			$scope.informations[index].editTable = x;
-		}
-		$scope.editAlert = function(){
-			console.log('i also called');
-			if ($scope.editComment === null) {
-				alert('fill the comment box');
-			}
- 			if ($scope.editProjectInfo === null) {
- 				alert('Please select the project');
- 			}
-			$scope.showModal = !$scope.showModal;
-			$('.modal,.modal-backdrop').hide();
-			
-			$scope.informations[$scope.editIndex].Project = $scope.editProjectInfo.name;
-			$scope.informations[$scope.editIndex].Duration = $scope.editduration;
-			$scope.informations[$scope.editIndex].Comment = $scope.editComment;
-			$scope.informations[$scope.editIndex].userDateInfo = $scope.editDate;
-		}
-		$scope.$watch('editduration', function(newvalue, oldvalue){
-			if($scope.editduration > 24) {
-				$scope.editduration = 24;
-				alert("Please enter the duration between the range of 1-24 hours");
-			}
-			else if($scope.editduration < 1) {
-				$scope.editduration = 1;
-				alert("Please enter the duration between the range of 1-24 hours");
-				console.log($scope.userDate);
-			}
-		});
-
-
-		// Delete Table options
-			$scope.deleteIndex;
-			$scope.deleteModal = false;
-			$scope.toggleDeleteModal = function(index,str){
-				if(index !=-1){
-					$scope.deleteIndex = index;
-				}                                           
-				$scope.buttonClicked = str;
-				$scope.deleteModal = !$scope.deleteModal;
-			};
-			$scope.removeUserinfo = function() {
-				var index = $scope.deleteIndex;
-				$scope.informations.splice(index, 1);
-				console.log($scope.informations.length);
-				if($scope.informations.length < 1) {
-		            $scope.userTable = false;
-				}
-				$scope.deleteModal = !$scope.deleteModal;
-			}
-	
-			//GET Projects Data
-			$scope.users = [];
-			$http({
-				url:'data/projects.json',
-				method:'GET'
-			}).then(function(resp){
-				//success method
-				$scope.users = resp.data;
-				console.log(resp);
-			},function(resp){
-				//error method
-				console.log('error call');
-				console.log(resp);
-			});
-			
-			$scope.rowLimits = [10,25,50,100];
-
-			//pagination
-
-			$scope.numberOfPages=function(){
-				return Math.ceil($scope.getData().length/$scope.rowLimit);                
-			}
-			$scope.getData = function () {
-			  // needed for the pagination calc
-			  // https://docs.angularjs.org/api/ng/filter/filter
-			  return $filter('filter')($scope.users, $scope.test)			 
-			} 
-			// Report Controller
-
-			$scope.reportCheck = false;
-			$scope.selectAll = function(){
-				$scope.reportCheck = !$scope.reportCheck;
-			}
-
-			$scope.proTimePeriods = ["This Month", "Last Month", "This Week", "Last Week"];
-			$scope.disDatePicker = false;
-	}); 
 
 	// pagination custom filter
 
@@ -259,48 +140,48 @@ return {
 
 // user table edit directive
 
-    app.directive('modal', function () {
-    return {
-      template: '<div class="modal fade">' + 
-          '<div class="modal-dialog">' + 
-            '<div class="modal-content">' + 
-              '<div class="modal-header">' + 
-                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + 
-                '<h4 class="modal-title">{{ buttonClicked }} clicked!!</h4>' + 
-              '</div>' + 
-              '<div class="modal-body clearfix" ng-transclude></div>' + 
-            '</div>' + 
+app.directive('modal', function () {
+return {
+  template: '<div class="modal fade">' + 
+      '<div class="modal-dialog">' + 
+        '<div class="modal-content">' + 
+          '<div class="modal-header">' + 
+            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + 
+            '<h4 class="modal-title">{{ buttonClicked }} clicked!!</h4>' + 
           '</div>' + 
-        '</div>',
-      restrict: 'E',
-      transclude: true,
-      replace:true,
-      scope:true,
-      // scope: {
-      //       ngModel: "=",
-      //   },
-      link: function postLink(scope, element, attrs) {
-          scope.$watch(attrs.visible, function(value){
-          if(value == true)
-            $(element).modal('show');
-          else
-            $(element).modal('hide');
-        });
+          '<div class="modal-body clearfix" ng-transclude></div>' + 
+        '</div>' + 
+      '</div>' + 
+    '</div>',
+  restrict: 'E',
+  transclude: true,
+  replace:true,
+  scope:true,
+  // scope: {
+  //       ngModel: "=",
+  //   },
+  link: function postLink(scope, element, attrs) {
+      scope.$watch(attrs.visible, function(value){
+      if(value == true)
+        $(element).modal('show');
+      else
+        $(element).modal('hide');
+    });
 
-        $(element).on('shown.bs.modal', function(){
-          scope.$apply(function(){
-            scope.$parent[attrs.visible] = true;
-          });
-        });
+    $(element).on('shown.bs.modal', function(){
+      scope.$apply(function(){
+        scope.$parent[attrs.visible] = true;
+      });
+    });
 
-        $(element).on('hidden.bs.modal', function(){
-          scope.$apply(function(){
-            scope.$parent[attrs.visible] = false;
-          });
-        });
-      }
-    };
-  });
+    $(element).on('hidden.bs.modal', function(){
+      scope.$apply(function(){
+        scope.$parent[attrs.visible] = false;
+      });
+    });
+  }
+};
+});
 
 
 

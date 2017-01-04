@@ -6,4 +6,12 @@
 	"username": "ragul",
 	"password": "ragul",
 	"role": "user"
+}, {
+	"username": "manager",
+	"password": "manager",
+	"role": "manager"
+}, {
+	"username": "admin",
+	"password": "admin",
+	"role": "admin"
 }]
