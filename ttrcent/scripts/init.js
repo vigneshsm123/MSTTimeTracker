@@ -1,35 +1,59 @@
 
 (function () {
-	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker', 'userModule', 'loginModule']);
-	app.config(['$routeProvider',function($routeProvider) {
-      $routeProvider.when('/', {
+
+	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker', 'userModule', 'loginModule', 'managerModule', 'adminModule']);
+	app.config(['$routeProvider',function($r) {
+      $r.when('/', {
                      templateUrl : "login/views/login.html",
                      controller: "LoginController",
-                     authenticated:false
+                     authenticated:false,
+					 role:"none"
+
       })
      
       .when('/user', {
                      templateUrl : "user/views/user.html",
                      controller: "userController",
-                     authenticated:true
+                     authenticated:true,
+					 role:"user"
 
+      })
+	  .when('/manager', {
+                     templateUrl : "manager/views/manager.html",
+                     controller: "managerController",
+                     authenticated:true,
+					 role:"manager"
+
+      })
+	  .when('/admin', {
+                     templateUrl : "admin/views/admin.html",
+                     controller: "adminController",
+                     authenticated:true,
+					 role:"admin"
       })
       .when('/404', {
                      templateUrl : "views/404.html",
-                     authenticated:false
+                     authenticated:false,
+					 role:"none"
       })
       .otherwise({
                      redirectTo : "/404",
-                     authenticated:false
+                     authenticated:false,
+					           role:"none"
       });
 }]);
 app.run(function($rootScope, $location){
-	$rootScope.$on('$routeChangeStart',function(event, next, current){
-		if(next.$$route.authenticated == true && (typeof (sessionStorage.user) == 'undefined' || sessionStorage.user == '')){
+	$rootScope.$on('$routeChangeStart',function(event, next, current){		
+		if(next.$$route.authenticated == true && (typeof (sessionStorage.user) == 'undefined' || sessionStorage.user == '')){	
 			event.preventDefault();
 			$location.path('/');
 			console.log(sessionStorage.user);
-		}    
+		} 
+		if(next.$$route.role !='none' && next.$$route.role != sessionStorage.role){
+			event.preventDefault();
+			$location.path('/'+sessionStorage.role);
+			console.log('role mis-fired');
+		}	  
 	});
 });
 
@@ -42,12 +66,15 @@ app.factory('loginService', function($http, $window){
 			method:"GET"		
 			}).then(function(resp){
 				upColl= resp.data;
-				for(x in upColl){
+
+				for(x in upColl){ //use filter- change
+
 					if(upColl[x].username == username)
 						break;
 				}
 				if(upColl[x].password == password){
 					sessionStorage.setItem("user", upColl[x].username);
+					sessionStorage.setItem("role", upColl[x].role);
 					$window.location="#/"+upColl[x].role;
 					return true;
 				}	else{
@@ -60,6 +87,7 @@ app.factory('loginService', function($http, $window){
 		},	
 		logout: function(){
 			sessionStorage.user = '';
+			sessionStorage.role = '';
 			$window.location="#/";
 		}	
 	};
