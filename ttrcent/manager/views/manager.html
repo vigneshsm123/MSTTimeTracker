@@ -27,16 +27,291 @@
 </div>
 <div class="user-container">
 	<div ng-show="isSet(1)">
-		
+		<div class="row">
+			<div class="col-md-6">
+				<form name="userForm">
+				  <div class="form-group">
+				    <label for="exampleSelect2">Project</label>
+			    	<select class="form-control" ng-model="userProject" ng-options="userProject.name for userProject in userProjects">
+			  			<option value="">Select Project</option>
+			  		</select>
+				  </div>
+				  <div class="form-group">
+				    <label for="exampleInputEmail1">Duration</label>
+	    			<input type="number" class="form-control" ng-model="duration" placeholder="Enter Duration"/>
+				  </div>
+				  <div class="form-group">
+				    <label for="exampleTextarea">Comment</label>
+				    <textarea class="form-control"  rows="3" ng-model="userComment"></textarea>
+				  </div>
+				  <button type="submit" class="btn btn-primary" ng-click="myAlert()">Submit</button>
+				</form>
+			</div>
+			<div class="col-md-6">
+			<calender></calender>
+			</div>
+		</div>
+		<table ng-show="userTable" class="table table-bordered table-responsive table-striped">
+			<thead>
+				<th class="col-xs-3">Project</th>
+				<th class="col-xs-3">Duration</th>
+				<th class="col-xs-3">Comment</th>
+				<th class="col-xs-3">Date</th>
+				<th colspan="3">Options</th>
+			</thead>
+			<tr ng-repeat="info in informations" ng-class="{editUser: info.editTable}">
+				<td class="col-xs-3" contenteditable="{{info.editTable}}">{{info.Project}}</td>
+				<td class="col-xs-3" contenteditable="{{info.editTable}}">{{info.Duration}}</td>
+				<td class="col-xs-3" contenteditable="{{info.editTable}}">{{info.Comment}}</td>
+				<td class="col-xs-3" contenteditable="{{info.editTable}}">{{info.userDateInfo}}</td>
+				<td><button class="btn btn-primary" ng-click="toggleDeleteModal($index,'Delete')" title="Delete"><span class="glyphicon glyphicon-trash"></span></button></td>
+				<td><button class="btn btn-primary" data-toggle="modal" data-target="#myModal" ng-click="toggleModal($index, 'Edit Form')"><span class="glyphicon glyphicon-edit"></span></button></td>
+			</tr>
+		</table>
+		<div class="modal fade" id="myModal" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{ buttonClicked }} clicked!!</h4>
+              </div>
+              <div class="modal-body clearfix" >
+              	<div class="row">
+					<div class="col-md-6">
+						<form name="userForm">
+						  <div class="form-group">
+						    <label for="exampleSelect2">Project</label>
+					    	<select class="form-control" ng-model="editProjectInfo" ng-options="editProjectInfo.name for editProjectInfo in editProjectInfos">
+					  			<option value="">Select Project</option>
+					  		</select>					
+						  </div>
+						  <div class="form-group">
+						    <label for="exampleInputEmail1">Duration</label>
+			    			<input type="number" class="form-control" ng-model="editduration" placeholder="Enter Duration"/>
+						  </div>
+							<div class="form-group">
+							  <label for="">Date</label>
+				    			<ng-datepicker ng-model="editDate" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
+								</ng-datepicker>
+							</div>
+						  <div class="form-group">
+						    <label for="exampleTextarea">Comment</label>
+						    <textarea class="form-control"  rows="3" ng-model="editComment"></textarea>
+						  </div>
+						  <button type="" class="btn btn-primary" ng-click="editAlert()">Save</button>
+						</form>
+					</div>
+				</div>
+              </div>		
+			
+			</div>
+          </div>
+        </div>
+		<modal visible="deleteModal">
+			Are you sure want to delete ?
+			<div class="right">
+			<button ng-click="removeUserinfo()" class="btn btn-default">Delete</button>
+			<button ng-click="toggleDeleteModal(-1,'Delete Form')" class="btn btn-default">Cancel</button>
+			</div>
+		</modal>  
 	</div>
 	<div ng-show="isSet(2)">
-		
+		<div class="row">
+			<ul class="nav navbar-nav user-nav">
+				<li ng-class="{ active: isProjectSet(1) }">
+					<a href ng-click="setProjectTab(1)">Generate As Fresh Report</a>
+				</li>
+				<li  ng-class="{ active: isProjectSet(2) }">
+					<a href ng-click="setProjectTab(2)">Generate As Favourate</a>
+				</li>
+			</ul>
+		</div>
+		<div class="row" ng-show="isProjectSet(1)">
+				<form name="userForm">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label">Project</label>
+							<div class="panel panel-group">
+								<div class="panel panel-default">
+							      <div class="panel-heading" role="group"><button type="button"  ng-click = "selectAll()" class="btn btn-primary btn-report-project">Selectall / Deselectall</button><!-- <button type="button" class="btn btn-primary btn-report-project" ng-click = "selectAll()"></button> --></div>
+							      <div class="panel-body">
+							      	<ul class="list-group row">
+							      		<li class="list-group-item col-xs-6" ng-repeat="userProject in userProjects">
+								      		<div class="checkbox">
+										      <label><input type="checkbox" value="" ng-checked="reportCheck">{{userProject.name}}</label>
+										    </div>
+									    </li>
+							      	</ul>
+							      </div>
+							    </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Select Time Period</label>
+							<select class="form-control" ng-model="proTimePeriod" ng-options="proTimePeriod for proTimePeriod in proTimePeriods">
+					  			<option value="">Select Time Period</option>
+					  		</select>
+						</div>
+						<div class="form-group clearfix">
+							<label class="col-sm-12 control-label">or Set Dates</label>
+							<div class="col-md-6">
+								<ng-datepicker ng-model="startReportDate" first-week-day-sunday="true" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
+									</ng-datepicker>
+							</div>
+							<div class="col-md-6">
+								<ng-datepicker ng-model="endReportDate" first-week-day-sunday="true" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
+								</ng-datepicker>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Show fields</label>
+							<ul class="list-group">
+					      		<li class="list-group-item col-xs-4">
+						      		<div class="checkbox">
+								      <label><input type="checkbox" value="">Project</label>
+								    </div>
+							    </li>
+							    <li class="list-group-item col-xs-4">
+						      		<div class="checkbox">
+								      <label><input type="checkbox" value="">Duration</label>
+								    </div>
+							    </li>
+							    <li class="list-group-item col-xs-4">
+						      		<div class="checkbox">
+								      <label><input type="checkbox" value="">Comment</label>
+								    </div>
+							    </li>
+					      	</ul>
+						</div>	
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Group By</label>
+							<select class="form-control" ng-model="groupOption" ng-options="groupOption for groupOption in groupOptions">
+					  			<option value="">--No Grouping</option>
+					  		</select>
+						</div>
+						<div class="form-group">
+							<div class="checkbox">
+						      <label><input type="checkbox" value="" ng-disabled="groupCheck" ng-checked="!groupCheck">Totals Only</label>
+						    </div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Save as Favourate</label>
+							<div class="input-group">
+								<input type="text"  class="form-control" ng-model="saveFavourate" placeholder="Enter Favorite" maxlength="30" value="">
+								<span class="input-group-btn">
+									<span>
+										<input type="submit"  value="Save" class="btn btn-primary"  ng-click="savFav();"/>
+									</span>
+								</span>
+							</div>
+						</div>
+					</div>				
+		  		</form>
+		</div>
+		<div class="row" ng-show="isProjectSet(2)">
+			<form name="userForm">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-sm-12 control-label">Favourate Report</label>
+						<select class="form-control" ng-model="favReport" ng-options="favReport for favReport in favReports">
+				  			<option value="">--Select Favourate Report--</option>
+				  		</select>
+					</div>
+					<div class="form-group">
+						<table class="table table-responsive table-bordered table-striped">
+							<thead>
+								<th>Project</th>
+								<th>Duration</th>
+								<th>Comment</th>
+							</thead>
+							<tbody>
+								<tr ng-repeat= "favourateTable in favourateTables">
+									<td>{{favourateTable.favName}}</td>
+									<td>{{favourateTable.favDuration}}</td>
+									<td>{{favourateTable.favComment}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 	<div ng-show="isSet(3)">
-	
+	<div class="inner-addon left-addon">
+      <i class="glyphicon glyphicon-search"></i>
+      <input type="text" class="form-control" placeholder="Search"  ng-model="test"/>
+    </div>
+    <div class="row-addon right-addon">
+    	<select class="form-control"  ng-model="rowLimit" ng-init="rowLimit = 5" ng-options="rowLimit for rowLimit in rowLimits">
+  			<option value="">Select Row Limits</option>
+  		</select>
+    </div>
+		<table ng-table="usersTable" class="table table-bordered table-responsive table-striped">
+		<thead>
+			<th>Project</th>
+			<th>Description</th>
+		</thead>
+		   <tr ng-repeat="user in users | filter: test | startFrom:currentPage*rowLimit| limitTo:rowLimit">
+		       <td data-title="'Id'" class="col-xs-6">
+		           {{user.project}}
+		       </td>
+		       <td data-title="'First Name'" class="col-xs-6" >
+		           {{user.Description}}
+		       </td>
+		   </tr>
+		</table>
+		<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-default">
+			Previous
+		</button>
+		{{currentPage+1}}/{{numberOfPages()}}
+		<button ng-disabled="currentPage >= getData().length/rowLimit - 1" ng-click="currentPage=currentPage+1" class="btn btn-default">
+			Next
+		</button> 
 	</div>
 	<div ng-show="isSet(4)">
-	
+	<div class="inner-addon left-addon">
+      <i class="glyphicon glyphicon-search"></i>
+      <input type="text" class="form-control" placeholder="Search"  ng-model="test"/>
+    </div>
+    <div class="row-addon right-addon">
+    	<select class="form-control"  ng-model="userRowLimit" ng-init="userRowLimit = 5" ng-options="userRowLimit for userRowLimit in userRowLimits">
+  			<option value="">Select Row Limits</option>
+  		</select>
+    </div>
+    	<div class="row">
+			<table  class="table table-bordered table-responsive table-striped">
+			<thead>
+				<th>Name</th>
+				<th>Login</th>
+				<th>Role</th>
+				<th>Project List</th>
+			</thead>
+			   <tr ng-repeat="usersInfo in usersInformations | filter: userTest | startFrom : currentUserPage*userRowLimit| limitTo: userRowLimit" >
+			       <td >
+			           {{usersInfo.Name}}
+			       </td>
+			       <td   >
+			           {{usersInfo.Login}}
+			       </td>
+			       <td   >
+			           {{usersInfo.Role}}
+			       </td>
+			       <td   >
+			           {{usersInfo.ProjectList}}
+			       </td>
+			   </tr>
+			</table>
+    	</div>
+		<button ng-disabled="currentUserPage == 0" ng-click="currentUserPage=currentUserPage-1" class="btn btn-default">
+			Previous
+		</button>
+		{{currentUserPage+1}}/{{numberOfUserPages()}}
+		<button ng-disabled="currentUserPage >= getUserData().length/userRowLimit - 1" ng-click="currentUserPage =currentUserPage+1" class="btn btn-default">
+			Next
+		</button> 
 	</div>
 </div>
 

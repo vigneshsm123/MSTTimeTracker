@@ -1,4 +1,4 @@
-angular.module('loginFactory', [])
+angular.module('loginFactoryModule', [])
 .factory('loginService', function($http, $window, $filter){
 	return{
 	   loginAuthentication : function(username,password) {

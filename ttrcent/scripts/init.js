@@ -1,7 +1,7 @@
 
 (function () {
 
-	var app = angular.module('myApp', ['ngRoute','routeModule','loginFactory','jkuri.datepicker', 'userModule', 'loginModule', 'managerModule', 'adminModule']);
+	var app = angular.module('myApp', ['ngRoute','routeModule','loginFactoryModule','jkuri.datepicker', 'userModule', 'loginModule', 'managerModule', 'adminModule']);
 	
 app.run(function($rootScope, $location){
 	$rootScope.$on('$routeChangeStart',function(event, next, current){		
