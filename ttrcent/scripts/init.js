@@ -2,8 +2,13 @@
 (function () {
 
 	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker', 'userModule', 'loginModule', 'managerModule', 'adminModule']);
+<<<<<<< HEAD
 	app.config(['$routeProvider',function($routeProvider) {
       $routeProvider.when('/', {
+=======
+	app.config(['$routeProvider',function($r) {
+      $r.when('/', {
+>>>>>>> origin/master
                      templateUrl : "login/views/login.html",
                      controller: "LoginController",
                      authenticated:false,
@@ -51,12 +56,17 @@ app.run(function($rootScope, $location){
 		} 
 		if(next.$$route.role !='none' && next.$$route.role != sessionStorage.role){
 			event.preventDefault();
+<<<<<<< HEAD
 			alert('You are not authorised to see this ' + next.$$route.role + ' page');
 			$location.path('/'+ sessionStorage.role);
 			console.log('role mis-fired');
 		}
 		if(next.$$route.role == 'none') {
 			sessionStorage.role = '';
+=======
+			$location.path('/'+sessionStorage.role);
+			console.log('role mis-fired');
+>>>>>>> origin/master
 		}	  
 	});
 });
@@ -70,11 +80,24 @@ app.factory('loginService', function($http, $window, $filter){
 			method:"GET"		
 			}).then(function(resp){
 				upColl= resp.data;
+<<<<<<< HEAD
 				var filterResult = $filter('filter')(upColl,{'username' : username, 'password': password});
 				if(filterResult.length == 1) {
 					sessionStorage.setItem("user", filterResult[0].username);
 					sessionStorage.setItem("role", filterResult[0].role);
 					$window.location="#/"+ filterResult[0].role;
+=======
+
+				for(x in upColl){ //use filter- change
+
+					if(upColl[x].username == username)
+						break;
+				}
+				if(upColl[x].password == password){
+					sessionStorage.setItem("user", upColl[x].username);
+					sessionStorage.setItem("role", upColl[x].role);
+					$window.location="#/"+upColl[x].role;
+>>>>>>> origin/master
 					return true;
 				}
 				else{
