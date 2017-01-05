@@ -200,5 +200,4 @@ angular.module('userModule', [])
 			}
 
 			// Save Favourate
-
 	}); 
