@@ -2,11 +2,11 @@
 	<div class="card card-container">
         <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
         <img id="profile-img" class="profile-img-card" src="images/login-main-img.png" />
-        <p class="text-primary text-center">{{timeDisp}}</p>
+        <p class="text-primary text-center" ng-bind="timeDisp">?</p>
         <p id="profile-name" class="profile-name-card"></p>
         <form class="form-signin" name="logForm" ng-submit="login()">
             <span id="reauth-email" class="reauth-email"></span>
-            <input type="text" name="logInput" ng-model="username" id="inputEmail" class="form-control" placeholder="User Name" required autofocus/>
+            <input type="text" name="logInput" ng-model="username" id="inputEmail"  class="form-control" placeholder="User Name" required autofocus/>
             <input type="password" id="inputPassword" class="form-control" ng-model="password" placeholder="Password" required/>
 			<div class="text-danger">
 				{{message}}

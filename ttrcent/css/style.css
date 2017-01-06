@@ -252,6 +252,10 @@ div.core {
 .profile {
     margin-right: 8%;
 }
+.pull-center {
+    margin: 0 auto 20px;
+    display: table;
+}
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
 		float:none !important;
