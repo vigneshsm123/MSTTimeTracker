@@ -46,7 +46,9 @@ header {
 .nav > li.linkedin > a:hover {
     background: #0077b5 !important;
 }
-
+.navbar-nav {
+    margin: 7.5px 0;
+}
 .navbar-nav > li > a {
     padding-top: 10px;
     padding-bottom: 10px;
