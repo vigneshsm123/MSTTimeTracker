@@ -51,7 +51,7 @@ angular.module('adminModule', [])
         $scope.deleteIndex;
         $scope.deleteModal = false;
         $scope.AdminuserTable = true;
-        $scope.toggleDeleteModal = function(index, str) {
+        $scope.toggleDeleteUserModal = function(index, str) {
             if (index != -1) {
                 $scope.deleteIndex = index;
             }

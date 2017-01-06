@@ -242,7 +242,7 @@
 				       <td>
 				           {{AdminUser.Role}}
 				       </td>
-				       <td><button class="btn btn-primary" ng-click="toggleDeleteModal($index,'Delete')" title="Delete"><span class="glyphicon glyphicon-trash"></span></button></td>
+				       <td><button class="btn btn-primary" ng-click="toggleDeleteUserModal($index,'Delete')" title="Delete"><span class="glyphicon glyphicon-trash"></span></button></td>
 						<td><button class="btn btn-primary" data-toggle="modal" data-target="#addAdminUserModal" ng-click="toggleModal($index, 'Edit Form')"><span class="glyphicon glyphicon-edit"></span></button></td>
 				   </tr>
 				</table>
@@ -258,7 +258,7 @@
 				Are you sure want to delete ?
 				<div class="right">
 				<button ng-click="removeUserinfo()" class="btn btn-default">Delete</button>
-				<button ng-click="toggleDeleteModal(-1,'Delete Form')" class="btn btn-default">Cancel</button>
+				<button ng-click="toggleDeleteUserModal(-1,'Delete Form')" class="btn btn-default">Cancel</button>
 				</div>
 			</modal> 
 			<div class="modal fade" id="addAdminUserModal" role="dialog">
