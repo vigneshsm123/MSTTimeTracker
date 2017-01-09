@@ -256,6 +256,7 @@ div.core {
     margin: 0 auto 20px;
     display: table;
 }
+
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
 		float:none !important;

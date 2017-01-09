@@ -270,43 +270,50 @@
 	              <div class="modal-body clearfix" >
 	              	<div class="row">
 						<form name="exampleForm" ng-submit="addAdminUserAlert(exampleForm.$valid)" novalidate>
-							<div class="col-md-6">
+							<div class="col-xs-6">
 							  <div class="form-group">
 							    <label for="exampleSelect2">Name</label>
-						    	<input type="text" class="form-control" ng-model="addUserName" name="name" placeholder="Add Name" required autofocus/>
-						    	<span ng-show="exampleForm.name.$error.required && !exampleForm.name.$pristine" class="text-danger">This field is required</span>					
+						    	<input type="text" class="form-control" ng-model="addUserName" name="name" placeholder="Add Name" ng-required="true" autofocus/>
+						    	<span ng-show="!exampleForm.name.$valid && exampleForm.$submitted" class="text-danger">This field is required</span>					
 							  </div>
 							  <div class="form-group">
 							    <label for="exampleInputEmail1">Login</label>
-				    			<input type="text" class="form-control" ng-model="addUserLogin" name="login" placeholder="Add Login" required autofocus/>
-				    			<span ng-show="exampleForm.login.$error.required && !exampleForm.login.$pristine" class="text-danger">This field is required</span>
+				    			<input type="text" class="form-control" ng-model="addUserLogin" name="login" placeholder="Add Login" ng-required="true" autofocus/>
+				    			<span ng-show="!exampleForm.login.$valid && exampleForm.$submitted" class="text-danger">This field is required</span>
 							  </div>
 								<div class="form-group">
 									<label for="">Password</label>
-									<input type="Password" class="form-control" name="Password" ng-model="addUserPassword" placeholder="Enter Password" ng-minlength="5" ng-maxlength="10" required /><span ng-show="exampleForm.Password.$error.required && !exampleForm.Password.$pristine" class="text-danger">This field is required</span><span ng-show="exampleForm.Password.$error.minlength" class="text-danger">This is too short</span><span ng-show="exampleForm.Password.$error.maxlength" class="text-danger">This is too long</span>
+									<input type="Password" class="form-control" name="Password" ng-model="addUserPassword" placeholder="Enter Password" ng-minlength="5" ng-maxlength="10" ng-required="true" autofocus/><span ng-show="exampleForm.Password.$error.maxlength" class="text-danger">This is too long</span>
+									<span ng-show="exampleForm.Password.$error.minlength" class="text-danger">This is too short</span>
+									<span ng-show="exampleForm.Password.$error.required && (!exampleForm.Password.$valid && exampleForm.$submitted)" class="text-danger">This field is required</span>
 								</div>
 								<div class="form-group">
 									<label for="">Confirm Password</label>
-									<input type="Password" class="form-control" name="confirmPassword" ng-model="addUserConfirmPassword" placeholder="Confirm Password" ng-minlength="5" ng-maxlength="10" required/>
+									<input type="Password" class="form-control" name="confirmPassword" ng-model="addUserConfirmPassword" placeholder="Confirm Password" ng-minlength="5" ng-maxlength="10" ng-required="true" autofocus/>
 									<!-- <span ng-show="exampleForm.confirmPassword.$error.required && !exampleForm.confirmPassword.$pristine" class="text-danger">This field is required</span><span ng-show="exampleForm.confirmPassword.$error.minlength" class="text-danger">This is too short</span><span ng-show="exampleForm.confirmPassword.$error.maxlength" class="text-danger">This is too long</span> -->
-									<span ng-show=" addUserPassword != addUserConfirmPassword ">Confirm password not matching with password</span>
+									<span ng-show=" (addUserPassword != addUserConfirmPassword) && exampleForm.confirmPassword.$valid  ">Confirm password not matching with password</span>
+									<span ng-show="exampleForm.confirmPassword.$error.maxlength" class="text-danger">This is too long</span>
+									<span ng-show="exampleForm.confirmPassword.$error.required && (!exampleForm.confirmPassword.$valid && exampleForm.$submitted)" class="text-danger">This field is required</span>
 								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="form-group">
+							<div class="col-xs-6">
+								<div class="form-group"
+										ng-class="{'has-error':!exampleForm.userEmail.$valid && !exampleForm.userEmail.$pristine}">
 							    	<!-- <label>Email:</label>
 				    				<input type="email" class="form-control" ng-model="adminUserEmail" name="userFirstName" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" placeholder="Email"required>
 									<div ng-messages="adminuserForm.userFirstName.$error">
 										<div ng-message="pattern">Please enter a valid email address!</div>
 									</div> -->
 									<label>Email Address:</label>
-									<input type="email" class="form-control" name="userEmail" ng-model="adminUserEmail" placeholder="Enter the Email Address" required />
-									<span ng-show="exampleForm.userEmail.$error.required && !exampleForm.userEmail.$pristine" class="text-danger">This field is required</span>
+									<input type="email" class="form-control" name="userEmail" ng-model="adminUserEmail" placeholder="Enter the Email Address" ng-required="true" autofocus/>
 									<span ng-show="exampleForm.userEmail.$error.email" class="text-danger">Not an valid Email</span>
+									<span ng-show="exampleForm.userEmail.$error.required &&(!exampleForm.$valid && exampleForm.$submitted)" class="text-danger">This field is required</span>	
+									<!-- <pre>form submitted ? {{exampleForm | json }}</pre> -->
 							  	</div>
 								<div class="form-group">
 							    	<label for="exampleInputEmail1">Role</label>
-				    				<input type="text" class="form-control" ng-model="addUserRole" placeholder="Add Role"/>
+				    				<input type="text" class="form-control" name="role" ng-model="addUserRole" placeholder="Add Role" ng-required="true"  autofocus/>
+				    				<span ng-show="!exampleForm.role.$valid && exampleForm.$submitted" class="text-danger">This field is required</span>
 							  	</div>
 								<div class="form-group">
 									<label for="exampleInputEmail1">Status</label>
@@ -335,7 +342,7 @@
 									</table>
 								</div>
 							</div>
-							<button type="" class="btn btn-primary" ng-click="">{{buttonClicked}}</button>
+							<button type="submit" class="btn btn-primary" ng-click="">{{buttonClicked}}</button>
 						</form>
 					</div>
 	              </div>		
