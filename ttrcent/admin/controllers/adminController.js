@@ -89,43 +89,23 @@ angular.module('adminModule', [])
         	if(valid) {
 	            console.log('i submitted');
 	            console.log($scope.addUserName);
-	            if (angular.isUndefined($scope.addUserName) || $scope.addUserName === null || $scope.addUserName == '') {
-	                alert('fill the user name');
-	            }
-	            else if (angular.isUndefined($scope.addUserLogin) || $scope.addUserLogin === null || $scope.addUserLogin == '') {
-	                alert('fill the user login');
-	            }
-	            else if(angular.isUndefined($scope.addUserPassword) || $scope.addUserPassword === null || $scope.addUserPassword == '') {
-	            	alert('fill the user password');
-	            }
-	         	else if(angular.isUndefined($scope.addUserConfirmPassword) || $scope.addUserConfirmPassword === null || $scope.addUserConfirmPassword == '') {
-	            	alert('fill the user confirm password');
-	            }
-	            else if( $scope.addUserPassword != $scope.addUserConfirmPassword ) {
-	            	alert('Confirm password is not mtching with password');
-	            }
-	            else if (angular.isUndefined($scope.addUserRole) || $scope.addUserRole === null || $scope.addUserRole == '') {
-	                alert('fill the user role');
-	            } 
-	            else {
-	                console.log($scope.buttonClicked);
-	                if ($scope.buttonClicked == 'Add User') {
-	                    $scope.AdminUsers.unshift({
-	                        Name: $scope.addUserName,
-	                        Login: $scope.addUserLogin,
-	                        Role: $scope.addUserRole
-	                    });
-	                    $scope.showModal = !$scope.showModal;
-	                    $('.modal,.modal-backdrop').hide();
-	                } else if ($scope.buttonClicked == 'Edit Form') {
-	                    console.log("I am edit");
-	                    $scope.AdminUsers[$scope.addIndex].Name = $scope.addUserName;
-	                    $scope.AdminUsers[$scope.addIndex].Login = $scope.addUserLogin;
-	                    $scope.AdminUsers[$scope.addIndex].Role = $scope.addUserRole;
-	                    $scope.showModal = !$scope.showModal;
-	                    $('.modal,.modal-backdrop').hide();
-	                }
-	            }
+                console.log($scope.buttonClicked);
+                if ($scope.buttonClicked == 'Add User') {
+                    $scope.AdminUsers.unshift({
+                        Name: $scope.addUserName,
+                        Login: $scope.addUserLogin,
+                        Role: $scope.addUserRole
+                    });
+                    $scope.showModal = !$scope.showModal;
+                    $('.modal,.modal-backdrop').hide();
+                } else if ($scope.buttonClicked == 'Edit Form') {
+                    console.log("I am edit");
+                    $scope.AdminUsers[$scope.addIndex].Name = $scope.addUserName;
+                    $scope.AdminUsers[$scope.addIndex].Login = $scope.addUserLogin;
+                    $scope.AdminUsers[$scope.addIndex].Role = $scope.addUserRole;
+                    $scope.showModal = !$scope.showModal;
+                    $('.modal,.modal-backdrop').hide();
+                }
         	}
         }
         $scope.toggleModal = function(index, btnClicked) {
