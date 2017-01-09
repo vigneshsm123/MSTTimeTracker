@@ -58,10 +58,10 @@
                {{project.Desc}}
             </td>
             <td>
-               <button class="btn btn-primary" ng-click="toggleDeleteModal($index,'active',true)" ><span class="glyphicon glyphicon-trash"></span></button>
+               <button class="btn btn-primary" ng-click="toggleDeleteModal(((currentActivePage*activeRowLimit)+$index),'active',true)" ><span class="glyphicon glyphicon-trash"></span></button>
             </td>
             <td>
-               <button class="btn btn-primary" data-toggle="modal" data-target="#editProjectModal" ng-click="toggleEditProjectModal($index, true)"><span class="glyphicon glyphicon-edit"></span></button>
+               <button class="btn btn-primary" data-toggle="modal" data-target="#editProjectModal" ng-click="toggleEditProjectModal(((currentActivePage*activeRowLimit)+$index), true)"><span class="glyphicon glyphicon-edit"></span></button>
             </td>
          </tr>
       </table>
@@ -101,10 +101,10 @@
                {{project.Desc}}
             </td>
             <td>
-               <button class="btn btn-primary" ng-click="toggleDeleteModal($index,'inactive',true)" ><span class="glyphicon glyphicon-trash"></span></button>
+               <button class="btn btn-primary" ng-click="toggleDeleteModal(((currentInActivePage*inactiveRowLimit)+$index),'inactive',true)" ><span class="glyphicon glyphicon-trash"></span></button>
             </td>
             <td>
-               <button class="btn btn-primary" data-toggle="modal" data-target="#editProjectModal" ng-click="toggleEditProjectModal($index, false)"><span class="glyphicon glyphicon-edit"></span></button>
+               <button class="btn btn-primary" data-toggle="modal" data-target="#editProjectModal" ng-click="toggleEditProjectModal(((currentInActivePage*inactiveRowLimit)+$index), false)"><span class="glyphicon glyphicon-edit"></span></button>
             </td>
          </tr>
       </table>
@@ -127,15 +127,20 @@
             <div class="modal-body clearfix" >
                <div class="row">
                   <div class="col-md-6">
-                     <form name="userForm" ng-submit="addActiveProject()">
-                        <div class="form-group">
-                           <label for="">Name</label>
-                           <input type="text" class="form-control" ng-model="projectName" placeholder="Enter Project Name"/>
+
+                     <form name="userForm2" ng-submit="addActiveProject(userForm2.$valid)" novalidate="novalidate">
+                        <div class="form-group"
+							  ng-class="{'has-error':(!userForm2.projectName.$pristine||userForm2.$submitted) && !userForm2.projectName.$valid,'has-success': userForm2.projectName.$valid && (!userForm2.projectName.$pristine||userForm2.$submitted)}">
+                           <label for="" class="control-label">Name*</label>
+                           <input type="text" class="form-control" ng-model="projectName" name="projectName" placeholder="Enter Project Name" ng-required="true" autofocus />
+						   <div class="helpblock has-error" style="color: #a94442;"  ng-show="!userForm2.projectName.$valid && userForm2.$submitted">This field is required</div>
                         </div>
-                        <div class="form-group">
-                           <label for="">Description</label>
-                           <textarea class="form-control"  rows="3" ng-model="projectDesc" placeholder="Enter Project Description"></textarea>                                                                               
-                        </div>
+                        <div class="form-group"
+						ng-class="{'has-error':(!userForm2.projectDesc.$pristine||userForm2.$submitted) && !userForm2.projectDesc.$valid,'has-success': userForm2.projectDesc.$valid && (!userForm2.projectDesc.$pristine||userForm2.$submitted)}">
+                           <label for="" class="control-label">Description*</label>
+                           <textarea class="form-control"  rows="3" ng-model="projectDesc" name="projectDesc" placeholder="Enter Project Description" required="required" ></textarea>                                                                               
+						   <div class="has-error helpblock" style="color: #a94442;" ng-show="!userForm2.projectDesc.$valid && userForm2.$submitted">This field is required</div>
+						</div>
                         <button type="submit" class="btn btn-primary" >Add</button>
                      </form>
                   </div>
@@ -166,8 +171,8 @@
                         </div>
                         <div class="form-group">
                            <select class="form-control" ng-model ="editProjectStatus">
-                              <option value="active" ng-selected="isActive">Active</option>
-                              <option value="inactive" ng-selected="!isActive">Inactive</option>
+                              <option value="active">Active</option>
+                              <option value="inactive">Inactive</option>
                            </select>
                         </div>
                         <div class="form-group">
