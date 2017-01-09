@@ -80,19 +80,15 @@ angular.module('adminModule', [])
             $scope.addUserName = '';
             $scope.addUserLogin = '';
             $scope.addUserRole = '';
+            $scope.Password = '';
+            $scope.addUserConfirmPassword = '';
+            $scope.userEmail = '';
+            $scope.exampleForm.$setPristine();
         };
-        $scope.addAdminUserAlert = function() {
-            console.log('i also called');
-            console.log($scope.addUserName);
-            if (angular.isUndefined($scope.addUserName) || $scope.addUserName === null || $scope.addUserName == '') {
-                alert('fill the user name');
-            }
-            if (angular.isUndefined($scope.addUserLogin) || $scope.addUserLogin === null || $scope.addUserLogin == '') {
-                alert('fill the user login');
-            }
-            if (angular.isUndefined($scope.addUserRole) || $scope.addUserRole === null || $scope.addUserRole == '') {
-                alert('fill the user role');
-            } else {
+        $scope.addAdminUserAlert = function(valid) {
+        	if(valid) {
+	            console.log('i submitted');
+	            console.log($scope.addUserName);
                 console.log($scope.buttonClicked);
                 if ($scope.buttonClicked == 'Add User') {
                     $scope.AdminUsers.unshift({
@@ -110,7 +106,7 @@ angular.module('adminModule', [])
                     $scope.showModal = !$scope.showModal;
                     $('.modal,.modal-backdrop').hide();
                 }
-            }
+        	}
         }
         $scope.toggleModal = function(index, btnClicked) {
             $scope.buttonClicked = btnClicked;
