@@ -46,7 +46,9 @@ header {
 .nav > li.linkedin > a:hover {
     background: #0077b5 !important;
 }
-
+.navbar-nav {
+    margin: 7.5px 0;
+}
 .navbar-nav > li > a {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -249,6 +251,10 @@ div.core {
 } 
 .profile {
     margin-right: 8%;
+}
+.pull-center {
+    margin: 0 auto 20px;
+    display: table;
 }
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{

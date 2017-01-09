@@ -1,47 +1,8 @@
 
 (function () {
 
-	var app = angular.module('myApp', ['ngRoute','jkuri.datepicker', 'userModule', 'loginModule', 'managerModule', 'adminModule']);
-	app.config(['$routeProvider',function($r) {
-      $r.when('/', {
-                     templateUrl : "login/views/login.html",
-                     controller: "LoginController",
-                     authenticated:false,
-					 role:"none"
-
-      })
-     
-      .when('/user', {
-                     templateUrl : "user/views/user.html",
-                     controller: "userController",
-                     authenticated:true,
-					 role:"user"
-
-      })
-	  .when('/manager', {
-                     templateUrl : "manager/views/manager.html",
-                     controller: "managerController",
-                     authenticated:true,
-					 role:"manager"
-
-      })
-	  .when('/admin', {
-                     templateUrl : "admin/views/admin.html",
-                     controller: "adminController",
-                     authenticated:true,
-					 role:"admin"
-      })
-      .when('/404', {
-                     templateUrl : "views/404.html",
-                     authenticated:false,
-					 role:"none"
-      })
-      .otherwise({
-                     redirectTo : "/404",
-                     authenticated:false,
-					           role:"none"
-      });
-}]);
+	var app = angular.module('myApp', ['ngRoute','routeModule','loginFactoryModule','jkuri.datepicker', 'userModule', 'loginModule', 'managerModule', 'adminModule']);
+	
 app.run(function($rootScope, $location){
 	$rootScope.$on('$routeChangeStart',function(event, next, current){		
 		if(next.$$route.authenticated == true && (typeof (sessionStorage.user) == 'undefined' || sessionStorage.user == '')){	
@@ -49,49 +10,19 @@ app.run(function($rootScope, $location){
 			$location.path('/');
 			console.log(sessionStorage.user);
 		} 
-		if(next.$$route.role !='none' && next.$$route.role != sessionStorage.role){
+		if(typeof (next.$$route.role) != 'undefined' && next.$$route.role !='none' && next.$$route.role != sessionStorage.role){
 			event.preventDefault();
-			$location.path('/'+sessionStorage.role);
+			alert('You are not authorised to see this ' + next.$$route.role + ' page');
+			$location.path('/'+ sessionStorage.role);
 			console.log('role mis-fired');
+		}
+		if(next.$$route.role == 'none') {
+			sessionStorage.role = '';
 		}	  
 	});
 });
 
-app.factory('loginService', function($http, $window){
-	return{
-	   loginAuthentication : function(username,password) {
-		   var upColl = [];
-		   $http({
-			url:"data/loginAuth.json",
-			method:"GET"		
-			}).then(function(resp){
-				upColl= resp.data;
 
-				for(x in upColl){ //use filter- change
-
-					if(upColl[x].username == username)
-						break;
-				}
-				if(upColl[x].password == password){
-					sessionStorage.setItem("user", upColl[x].username);
-					sessionStorage.setItem("role", upColl[x].role);
-					$window.location="#/"+upColl[x].role;
-					return true;
-				}	else{
-					$window.location="#/";
-					return false;
-				}	
-			},function(resp){
-				return false;
-			});
-		},	
-		logout: function(){
-			sessionStorage.user = '';
-			sessionStorage.role = '';
-			$window.location="#/";
-		}	
-	};
-});
 
 //login controller
 
@@ -186,8 +117,7 @@ return {
   }
 };
 });
-
-
+	
 
 })();
 
