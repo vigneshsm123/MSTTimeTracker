@@ -1,1 +1,300 @@
-<h1>{{msg}}</h1>
+
+<div class="user-menu clearfix">
+	<ul class="nav navbar-nav user-nav">
+		<li ng-class="{ active: isSet(1) }">
+			<a href ng-click="setTab(1)">Reports</a>
+		</li>
+		<li  ng-class="{ active: isSet(2) }">
+			<a href ng-click="setTab(2)">Projects</a>
+		</li>
+		<li ng-class="{ active: isSet(3) }">
+			<a href ng-click="setTab(3)">Users</a>
+		</li>
+	</ul>
+	<div class="pull-right profile">
+		<ul class="nav nav-tabs">
+		    <li class="dropdown">
+		      <a class="dropdown-toggle" data-toggle="dropdown">Hi {{userName}} <span class="caret"></span></a>
+		      <ul class="dropdown-menu">
+		        <li><a ng-click="userLogout()">Log Out</a></li>                    
+		      </ul>
+		    </li>
+	  </ul>
+	</div>
+</div>
+<div class="user-container">
+	<div ng-show="isSet(1)">
+		
+	</div>
+	<div ng-show="isSet(2)" class="clearfix">
+   <!--Projects Tab-->
+   <div class="col-md-12 clearfix">
+      <button class="btn btn-primary pull-center"  data-toggle="modal" data-target="#addProjectModal" ng-click="toggleAddProject($index)">Add Project</button>
+   </div>
+   <div class="col-md-12" ng-show ="activeProjects.length>0">
+      <div class="inner-addon left-addon">
+         <i class="glyphicon glyphicon-search"></i>
+         <input type="text" class="form-control" placeholder="Search"  ng-model="filterActiveProject"/>
+      </div>
+      <div class="col-xs-3 col-xs-offset-2  col-sm-offset-3 col-lg-offset-4">
+         <h4>Active Projects</h4>
+      </div>
+      <div class="row-addon right-addon">
+         <select class="form-control"  ng-model="activeRowLimit" ng-init="activeRowLimit = 5" ng-options="rowLimit for rowLimit in activeRowLimits">
+            <option value="">Select Row Limits</option>
+         </select>
+      </div>
+      <table ng-table="activeProjectTable"  class="table table-bordered table-responsive table-striped clearfix">
+         <thead>
+            <th>Project Name</th>
+            <th>Description</th>
+            <th colspan="2">Actions</th>
+         </thead>
+         <tr ng-repeat="project in activeProjects| filter: filterActiveProject| startFrom:currentActivePage*activeRowLimit| limitTo:activeRowLimit">
+            <td data-title="'project Name'" class="col-xs-6">
+               {{project.Name}}
+            </td>
+            <td data-title="'desc'" class="col-xs-6" >
+               {{project.Desc}}
+            </td>
+            <td>
+               <button class="btn btn-primary" ng-click="toggleDeleteModal($index,'active',true)" ><span class="glyphicon glyphicon-trash"></span></button>
+            </td>
+            <td>
+               <button class="btn btn-primary" data-toggle="modal" data-target="#editProjectModal" ng-click="toggleEditProjectModal($index, true)"><span class="glyphicon glyphicon-edit"></span></button>
+            </td>
+         </tr>
+      </table>
+      <button ng-disabled="currentActivePage == 0" ng-click="currentActivePage=currentActivePage-1" class="btn btn-default">
+      Previous
+      </button>
+      {{currentActivePage+1}}/{{numberOfActivePages()}}
+      <button ng-disabled="currentActivePage >= getActiveData().length/activeRowLimit - 1" ng-click="currentActivePage=currentActivePage+1" class="btn btn-default">
+      Next
+      </button>
+   </div>
+   <!--inactive project table div-->
+   <div class="col-md-12" ng-show ="inactiveProjects.length>0">
+      <div class="inner-addon left-addon">
+         <i class="glyphicon glyphicon-search"></i>
+         <input type="text" class="form-control" placeholder="Search"  ng-model="filterInActiveProject"/>
+      </div>
+      <div class="col-xs-3 col-xs-offset-2  col-sm-offset-3 col-lg-offset-4">
+         <h4>In Active Projects</h4>
+      </div>
+      <div class="row-addon right-addon">
+         <select class="form-control"  ng-model="inactiveRowLimit" ng-init="inactiveRowLimit = 5" ng-options="rowLimit for rowLimit in activeRowLimits">
+            <option value="">Select Row Limits</option>
+         </select>
+      </div>
+      <table ng-table="inactiveProjectTable"  class="table table-bordered table-responsive table-striped clearfix">
+         <thead>
+            <th>Project Name</th>
+            <th>Description</th>
+            <th colspan="2">Actions</th>
+         </thead>
+         <tr ng-repeat="project in inactiveProjects| filter: filterInActiveProject| startFrom:currentInActivePage*inactiveRowLimit| limitTo:inactiveRowLimit">
+            <td data-title="'project Name'" class="col-xs-6">
+               {{project.Name}}
+            </td>
+            <td data-title="'desc'" class="col-xs-6" >
+               {{project.Desc}}
+            </td>
+            <td>
+               <button class="btn btn-primary" ng-click="toggleDeleteModal($index,'inactive',true)" ><span class="glyphicon glyphicon-trash"></span></button>
+            </td>
+            <td>
+               <button class="btn btn-primary" data-toggle="modal" data-target="#editProjectModal" ng-click="toggleEditProjectModal($index, false)"><span class="glyphicon glyphicon-edit"></span></button>
+            </td>
+         </tr>
+      </table>
+      <button ng-disabled="currentInActivePage == 0" ng-click="currentInActivePage=currentInActivePage-1" class="btn btn-default">
+      Previous
+      </button>
+      {{currentInActivePage+1}}/{{numberOfInActivePages()}}
+      <button ng-disabled="currentInActivePage >= getInActiveData().length/inactiveRowLimit - 1" ng-click="currentInActivePage=currentInActivePage+1" class="btn btn-default">
+      Next
+      </button>
+   </div>
+   <!--add project modal-->
+   <div class="modal fade" id="addProjectModal" role="dialog">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h4 class="modal-title">Add Active Project</h4>
+            </div>
+            <div class="modal-body clearfix" >
+               <div class="row">
+                  <div class="col-md-6">
+                     <form name="userForm" ng-submit="addActiveProject()">
+                        <div class="form-group">
+                           <label for="">Name</label>
+                           <input type="text" class="form-control" ng-model="projectName" placeholder="Enter Project Name"/>
+                        </div>
+                        <div class="form-group">
+                           <label for="">Description</label>
+                           <textarea class="form-control"  rows="3" ng-model="projectDesc" placeholder="Enter Project Description"></textarea>                                                                               
+                        </div>
+                        <button type="submit" class="btn btn-primary" >Add</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!--EDIT project modal-->
+   <div class="modal fade" id="editProjectModal" role="dialog">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h4 class="modal-title">Editing Project..</h4>
+            </div>
+            <div class="modal-body clearfix" >
+               <div class="row">
+                  <div class="col-md-12">
+                     <form name="userForm" ng-submit="editProject()">
+                        <div class="form-group">
+                           <label for="">Name</label>
+                           <input type="text" class="form-control" ng-model="editProjectName" placeholder="Enter Project Name" required />
+                        </div>
+                        <div class="form-group">
+                           <label for="">Description</label>
+                           <textarea class="form-control"  rows="3" ng-model="editProjectDesc" placeholder="Enter Project Description" required></textarea>                                                                                   
+                        </div>
+                        <div class="form-group">
+                           <select class="form-control" ng-model ="editProjectStatus">
+                              <option value="active" ng-selected="isActive">Active</option>
+                              <option value="inactive" ng-selected="!isActive">Inactive</option>
+                           </select>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label">Users</label>
+                           <div class="panel panel-group">
+                              <div class="panel panel-default">
+                                 <div class="panel-heading" role="group">
+                                    <button type="button"  ng-click = "selectAllProject(true)" class="btn btn-default">Selectall </button>
+                                    <button type="button"  ng-click = "selectAllProject(false)" class="btn btn-default">Deselectall</button>
+                                    <div class="panel-body">
+                                       <ul class="list-group row">
+                                          <li class="list-group-item col-xs-6" ng-repeat="user in usersProject">
+                                             <div class="checkbox">
+                                                <label>
+                                                <input type="checkbox" value="" ng-checked="userCheck"  ng-model="userProjCheckbox[$index]" ng-true-value="'{{user.username}}'" ng-false-value="''">
+                                                {{user.username}}
+                                                </label>
+                                             </div>
+                                          </li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" ng-click="saveProjectInfo()" >Save</button>
+                        <button type="submit" class="btn btn-primary"  data-dismiss="modal" aria-hidden="true" ng-click="clearEditValues()">Cancel</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <modal visible="deleteProjModal">
+      Are you sure want to delete ?
+      <div class="right">
+         <button ng-click="removeProjectInfo()" class="btn btn-default">Delete</button>
+         <button ng-click="toggleDeleteModal(-1,'',false)" class="btn btn-default">Cancel</button>
+      </div>
+   </modal>
+</div>
+	<div ng-show="isSet(3)">
+		<div class="row">
+			<button class="btn btn-primary pull-center"  data-toggle="modal" data-target="#addAdminUserModal" ng-click="toggleAdminUserProject($index,'Add User')">Add User</button> 
+		</div>
+		<div class="inner-addon left-addon">
+	      <i class="glyphicon glyphicon-search"></i>
+	      <input type="text" class="form-control" placeholder="Search"  ng-model="adminUserTest"/>
+	    </div>
+	    <div class="row-addon right-addon">
+	    	<select class="form-control"  ng-model="adminUserRowLimit" ng-init="adminUserRowLimit = 5" ng-options="adminUserRowLimit for adminUserRowLimit in adminUserRowLimits">
+	  			<option value="">Select Row Limits</option>
+	  		</select>
+	    </div>
+	    	<div class="clearfix">
+				<table  ng-show="AdminuserTable" class="table table-bordered table-responsive table-striped">
+					<thead>
+						<th>Name</th>
+						<th>Login</th>
+						<th>Role</th>
+						<th>Action</th>
+						<th colspan="3"></th>
+					</thead>
+				   <tr ng-repeat ="AdminUser in AdminUsers | filter : adminUserTest | startFrom : currentAdminUserPage*adminUserRowLimit| limitTo : adminUserRowLimit " >
+				       <td>
+				           {{AdminUser.Name}}
+				       </td>
+				       <td>
+				           {{AdminUser.Login}}
+				       </td>
+				       <td>
+				           {{AdminUser.Role}}
+				       </td>
+				       <td><button class="btn btn-primary" ng-click="toggleDeleteUserModal($index,'Delete')" title="Delete"><span class="glyphicon glyphicon-trash"></span></button></td>
+						<td><button class="btn btn-primary" data-toggle="modal" data-target="#addAdminUserModal" ng-click="toggleModal($index, 'Edit Form')"><span class="glyphicon glyphicon-edit"></span></button></td>
+				   </tr>
+				</table>
+	    	</div>
+			<button ng-disabled="currentAdminUserPage == 0" ng-click="currentAdminUserPage=currentAdminUserPage-1" class="btn btn-default">
+				Previous
+			</button>
+			{{currentAdminUserPage+1}}/{{numberOfAdminUserPages()}}
+			<button ng-disabled="currentAdminUserPage >= getAdminData().length/adminUserRowLimit - 1" ng-click="currentAdminUserPage =currentAdminUserPage+1" class="btn btn-default">
+				Next
+			</button> 
+			<modal visible="deleteModal">
+				Are you sure want to delete ?
+				<div class="right">
+				<button ng-click="removeUserinfo()" class="btn btn-default">Delete</button>
+				<button ng-click="toggleDeleteUserModal(-1,'Delete Form')" class="btn btn-default">Cancel</button>
+				</div>
+			</modal> 
+			<div class="modal fade" id="addAdminUserModal" role="dialog">
+	          <div class="modal-dialog">
+	            <div class="modal-content">
+	              <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	                <h4 class="modal-title">{{ buttonClicked }} clicked!!</h4>
+	              </div>
+	              <div class="modal-body clearfix" >
+	              	<div class="row">
+						<div class="col-md-6">
+							<form name="userForm">
+							  <div class="form-group">
+							    <label for="exampleSelect2">Name</label>
+						    	<input type="text" class="form-control" ng-model="addUserName" placeholder="Add Name"/>					
+							  </div>
+							  <div class="form-group">
+							    <label for="exampleInputEmail1">Login</label>
+				    			<input type="text" class="form-control" ng-model="addUserLogin" placeholder="Add Login"/>
+							  </div>
+								<div class="form-group">
+							    	<label for="exampleInputEmail1">Role</label>
+				    				<input type="text" class="form-control" ng-model="addUserRole" placeholder="Add Role"/>
+							  	</div>
+							  	<button type="" class="btn btn-primary" ng-click="addAdminUserAlert()">{{buttonClicked}}</button>
+							</form>
+						</div>
+					</div>
+	              </div>		
+				
+				</div>
+	          </div>
+        </div> 
+	</div>
+</div>
+
+
+

@@ -1,7 +1,7 @@
 
 (function () {
 
-	var app = angular.module('myApp', ['ngRoute','routeModule','loginFactory','jkuri.datepicker', 'userModule', 'loginModule', 'managerModule', 'adminModule']);
+	var app = angular.module('myApp', ['ngRoute','routeModule','loginFactoryModule','jkuri.datepicker', 'userModule', 'loginModule', 'managerModule', 'adminModule']);
 	
 app.run(function($rootScope, $location){
 	$rootScope.$on('$routeChangeStart',function(event, next, current){		
@@ -10,7 +10,7 @@ app.run(function($rootScope, $location){
 			$location.path('/');
 			console.log(sessionStorage.user);
 		} 
-		if(next.$$route.role !='none' && next.$$route.role != sessionStorage.role){
+		if(typeof (next.$$route.role) != 'undefined' && next.$$route.role !='none' && next.$$route.role != sessionStorage.role){
 			event.preventDefault();
 			alert('You are not authorised to see this ' + next.$$route.role + ' page');
 			$location.path('/'+ sessionStorage.role);
@@ -117,8 +117,7 @@ return {
   }
 };
 });
-
-
+	
 
 })();
 
