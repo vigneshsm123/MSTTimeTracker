@@ -160,8 +160,10 @@ angular.module('adminModule', [])
         $scope.projectDesc = '';
 
         //add active project modal
+
         $scope.addActiveProject = function(valid) {
 			if(valid){
+
                 $scope.activeProjects.unshift({
                     "Name": $scope.projectName,
                     "Desc": $scope.projectDesc,
@@ -170,15 +172,17 @@ angular.module('adminModule', [])
                 });
 					$('#addProjectModal').modal('toggle');	
 			} 
+
         };
         $scope.toggleAddProject = function(x) {
             $scope.projectName = '';
             $scope.projectDesc = '';
-			$scope.userForm2.$setPristine();
+			      $scope.userForm2.$setPristine();
         };
 
         //active project table pagination
 		$scope.currentActivePage = 0;
+
         $scope.numberOfActivePages = function() {
             return Math.ceil($scope.getActiveData().length / $scope.activeRowLimit);
         }
@@ -186,7 +190,9 @@ angular.module('adminModule', [])
             return $filter('filter')($scope.activeProjects, $scope.filterActiveProject)
         }
         //inactive project table pagination
-		$scope.currentInActivePage = 0 ;
+
+		   $scope.currentInActivePage = 0 ;
+
         $scope.numberOfInActivePages = function() {
             return Math.ceil($scope.getInActiveData().length / $scope.inactiveRowLimit);
         }
@@ -257,7 +263,6 @@ angular.module('adminModule', [])
             $scope.editProjectName = collection[index].Name;
             $scope.editProjectDesc = collection[index].Desc;
             $scope.editProjectStatus = collection[index].Status;
-			console.log($scope.currentProjTable);
         }
         $scope.saveProjectInfo = function() {
             var index = $scope.currentProjTable.index;

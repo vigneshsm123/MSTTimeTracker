@@ -127,6 +127,7 @@
             <div class="modal-body clearfix" >
                <div class="row">
                   <div class="col-md-6">
+
                      <form name="userForm2" ng-submit="addActiveProject(userForm2.$valid)" novalidate="novalidate">
                         <div class="form-group"
 							  ng-class="{'has-error':(!userForm2.projectName.$pristine||userForm2.$submitted) && !userForm2.projectName.$valid,'has-success': userForm2.projectName.$valid && (!userForm2.projectName.$pristine||userForm2.$submitted)}">
@@ -140,7 +141,6 @@
                            <textarea class="form-control"  rows="3" ng-model="projectDesc" name="projectDesc" placeholder="Enter Project Description" required="required" ></textarea>                                                                               
 						   <div class="has-error helpblock" style="color: #a94442;" ng-show="!userForm2.projectDesc.$valid && userForm2.$submitted">This field is required</div>
 						</div>
-						
                         <button type="submit" class="btn btn-primary" >Add</button>
                      </form>
                   </div>
