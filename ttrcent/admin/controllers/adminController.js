@@ -87,12 +87,22 @@ angular.module('adminModule', [])
             if (angular.isUndefined($scope.addUserName) || $scope.addUserName === null || $scope.addUserName == '') {
                 alert('fill the user name');
             }
-            if (angular.isUndefined($scope.addUserLogin) || $scope.addUserLogin === null || $scope.addUserLogin == '') {
+            else if (angular.isUndefined($scope.addUserLogin) || $scope.addUserLogin === null || $scope.addUserLogin == '') {
                 alert('fill the user login');
             }
-            if (angular.isUndefined($scope.addUserRole) || $scope.addUserRole === null || $scope.addUserRole == '') {
+            else if(angular.isUndefined($scope.addUserPassword) || $scope.addUserPassword === null || $scope.addUserPassword == '') {
+            	alert('fill the user password');
+            }
+         	else if(angular.isUndefined($scope.addUserConfirmPassword) || $scope.addUserConfirmPassword === null || $scope.addUserConfirmPassword == '') {
+            	alert('fill the user confirm password');
+            }
+            else if( $scope.addUserPassword != $scope.addUserConfirmPassword ) {
+            	alert('Confirm password is not mtching with password');
+            }
+            else if (angular.isUndefined($scope.addUserRole) || $scope.addUserRole === null || $scope.addUserRole == '') {
                 alert('fill the user role');
-            } else {
+            } 
+            else {
                 console.log($scope.buttonClicked);
                 if ($scope.buttonClicked == 'Add User') {
                     $scope.AdminUsers.unshift({
