@@ -4,6 +4,7 @@ angular.module('adminModule', [])
         $scope.userLogout = function() {
             loginService.logout();
         };
+
 		
 		//reports
 		//Save as favourate function
@@ -46,6 +47,7 @@ angular.module('adminModule', [])
 					$scope.groupCheck  = true;
 			});
 		}
+
         //user Tab function
         $scope.tab = 1;
         $scope.setTab = function(newTab) {

@@ -256,6 +256,7 @@ div.core {
     margin: 0 auto 20px;
     display: table;
 }
+
 .btn-rel{
 	margin-left:10px;
 	width:100px;
@@ -263,6 +264,7 @@ div.core {
 li.active{
 	background-color:#eee !important;
 }
+
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
 		float:none !important;
