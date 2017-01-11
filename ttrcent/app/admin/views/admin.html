@@ -24,7 +24,151 @@
 </div>
 <div class="user-container">
 	<div ng-show="isSet(1)">
-		
+
+		<div class="row">
+			<ul class="nav navbar-nav user-nav">
+				<li ng-class="{ active: isProjectSet(1) }">
+					<a href ng-click="setProjectTab(1)">Generate As Fresh Report</a>
+				</li>
+				<li  ng-class="{ active: isProjectSet(2) }">
+					<a href ng-click="setProjectTab(2)">Generate As Favourate</a>
+				</li>
+			</ul>
+		</div>
+		<div class="row" ng-show="isProjectSet(1)" class="clearfix">
+			<form name="reportsForm1" class="col-md-12 col-sm-12 col-xs-12">
+					<div class="">
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Manager</label>
+							<select class="form-control" ng-model="manager" ng-options="managerName for managerName in managers">
+								<option value="">select manager</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Project</label>
+							<div class="panel panel-group">
+								<div class="panel panel-default">
+							      <div class="panel-heading" role="group"><button type="button"  ng-click = "selectAll()" class="btn btn-primary btn-report-project">Selectall / Deselectall</button><!-- <button type="button" class="btn btn-primary btn-report-project" ng-click = "selectAll()"></button> --></div>
+							      <div class="panel-body">
+							      	<ul class="list-group row">
+							      		<li class="list-group-item col-xs-6" ng-repeat="userProject in userProjects">
+								      		<div class="checkbox">
+										      <label><input type="checkbox" value="" ng-checked="reportCheck">{{userProject.name}}</label>
+										    </div>
+									    </li>
+							      	</ul>
+							      </div>
+							    </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label">Users</label>
+							<div class="panel panel-group">
+								<div class="panel panel-default">
+							      <div class="panel-heading" role="group"><button type="button"  ng-click = "selectAllUser()" class="btn btn-primary btn-report-project">Selectall / Deselectall</button><!-- <button type="button" class="btn btn-primary btn-report-project" ng-click = "selectAll()"></button> --></div>
+							      <div class="panel-body">
+							      	<ul class="list-group row">
+							      		<li class="list-group-item col-xs-6" ng-repeat="user in users">
+								      		<div class="checkbox">
+										      <label><input type="checkbox" value="" ng-checked="userCheck">{{user}}</label>
+										    </div>
+									    </li>
+							      	</ul>
+							      </div>
+							    </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Billable</label>
+							<select class="form-control" ng-model="manager">
+								<option value="">-Select-</option>
+								<option value="billable">Billable</option>
+								<option value="nonbillable">Non Billable</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Select Time Period</label>
+							<select class="form-control" ng-model="proTimePeriod" ng-options="proTimePeriod for proTimePeriod in proTimePeriods">
+					  			<option value="">Select Time Period</option>
+					  		</select>
+						</div>
+						<div class="form-group clearfix">
+							<label class="col-sm-12 control-label">Or Set Dates</label>
+							<div class="col-md-6 col-sm-3">
+								<ng-datepicker ng-model="startReportDate" first-week-day-sunday="true" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
+									</ng-datepicker>
+							</div>
+							<div class="col-md-6 col-sm-3">
+								<ng-datepicker ng-model="endReportDate" first-week-day-sunday="true" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
+								</ng-datepicker>
+							</div>
+						</div>
+						<div class="form-group clearfix">
+							<label class="col-sm-12 control-label">Show Fields</label>
+							<label class="col-sm-3"><input type="checkbox"> Project</label>
+							<label class="col-sm-3"><input type="checkbox"> Duration</label>
+							<label class="col-sm-3"><input type="checkbox"> Comments</label>
+						</div>					
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Group By</label>
+							<select class="form-control" ng-model="groupOption" ng-options="groupOption for groupOption in groupOptions">
+					  			<option value="">--No Grouping--</option>
+					  		</select>
+						</div>
+						<div class="form-group">
+							<div class="checkbox">
+						      <label><input type="checkbox" value="" ng-disabled="groupCheck" ng-checked="!groupCheck">Totals Only</label>
+						    </div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-12 control-label">Save as Favourate</label>
+							<div class="input-group">
+								<input type="text"  class="form-control" ng-model="saveFavourate" placeholder="Enter Favorite" maxlength="30" value="">
+								<span class="input-group-btn">
+									<span>
+										<input type="submit"  value="Save" class="btn btn-primary"  ng-click="savFav();"/>
+									</span>
+								</span>
+							</div>
+						</div>
+				
+					</div>
+				</form>
+		</div>
+		<div class="row" ng-show="isProjectSet(2)">
+			<form name="reportsForm2">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-sm-12 control-label">Favourate Report</label>
+						<select class="form-control" ng-model="favReport" ng-options="favReport for favReport in favReports">
+				  			<option value="">--Select Favourate Report--</option>
+				  		</select>
+						
+					</div>
+					<div class="form-group clearfix pull-center">
+						<button type="button" class="btn btn-primary btn-rel">Generate</button>
+						<button type="button" class="btn btn-primary btn-rel">Delete</button>
+					</div>
+					<div class="form-group" ng-show="favourateTables.length>0">
+						<table class="table table-responsive table-bordered table-striped">
+							<thead>
+								<th>Project</th>
+								<th>Duration</th>
+								<th>Comment</th>
+							</thead>
+							<tbody>
+								<tr ng-repeat= "favourateTable in favourateTables">
+									<td>{{favourateTable.favName}}</td>
+									<td>{{favourateTable.favDuration}}</td>
+									<td>{{favourateTable.favComment}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</form>
+		</div>
+
 	</div>
 	<div ng-show="isSet(2)" class="clearfix">
    <!--Projects Tab-->

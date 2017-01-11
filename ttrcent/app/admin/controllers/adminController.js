@@ -5,6 +5,49 @@ angular.module('adminModule', [])
             loginService.logout();
         };
 
+		
+		//reports
+		//Save as favourate function
+		$scope.saveFavourate = null;
+		$scope.favReports = [];
+		$scope.favourateTables =[{favName:'Fun Project', favDuration: 2 , favComment: 'hdhkh'}];
+		$scope.savFav = function(){
+			if($scope.saveFavourate == "" | $scope.saveFavourate == null){
+				alert("Please enter Save as favourate field");
+			}
+			else{
+				$scope.favReports.push($scope.saveFavourate);
+				$scope.saveFavourate="";
+				//$scope.favourateTables.push({favName:'Fun Project', favDuration: 2 , favComment: 'hdhkh'});
+				//console.log($scope.favourateTables);
+			}
+		}
+		$scope.userProjects = [{name: 'Fun Project'}, {name: 'NFDN'}];
+		$scope.reportCheck = false;
+		$scope.selectAll = function(){
+			$scope.reportCheck = !$scope.reportCheck;
+		}
+		$scope.users = ["ABC","ragul","kumar","saravanan"];
+		$scope.userCheck = false;
+		$scope.selectAllUser = function(){
+			$scope.userCheck = !$scope.userCheck;
+		}
+		$scope.managers=["suresh","krishna","ragul"];
+		$scope.proTimePeriods = ["This Month", "Last Month", "This Week", "Last Week"];
+		$scope.disDatePicker = false;
+		//group options
+		$scope.groupOptions = ["Date", "User","Project"];
+
+		$scope.groupCheck = false;
+		if(typeof($scope.groupCheck) != 'undefined'){
+			$scope.$watch('groupOption', function(newvalue, oldvalue){
+				if(newvalue != null && typeof(newvalue) != 'undefined')
+					$scope.groupCheck  = false;
+				else
+					$scope.groupCheck  = true;
+			});
+		}
+
         //user Tab function
         $scope.tab = 1;
         $scope.setTab = function(newTab) {
@@ -245,7 +288,7 @@ angular.module('adminModule', [])
             }
             $scope.editProjectName = collection[index].Name;
             $scope.editProjectDesc = collection[index].Desc;
-            $scope.editProjectStatus = collection[index].Status;
+            $scope.editProjectStatus =  $scope.currentProjTable.name;
         }
         $scope.saveProjectInfo = function() {
             var index = $scope.currentProjTable.index;

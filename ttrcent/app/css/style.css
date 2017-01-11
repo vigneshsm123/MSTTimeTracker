@@ -257,6 +257,14 @@ div.core {
     display: table;
 }
 
+.btn-rel{
+	margin-left:10px;
+	width:100px;
+}
+li.active{
+	background-color:#eee !important;
+}
+
 @media (max-width:768px){
 	.social-nav, .brand,.brand a, .social-container{
 		float:none !important;
