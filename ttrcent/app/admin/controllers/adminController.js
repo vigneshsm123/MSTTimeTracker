@@ -50,7 +50,6 @@ angular.module('adminModule', [])
         // Delete data from admin user tab
         $scope.deleteIndex;
         $scope.deleteModal = false;
-        $scope.AdminuserTable = true;
         $scope.toggleDeleteUserModal = function(index, str) {
             if (index != -1) {
                 $scope.deleteIndex = index;
@@ -62,9 +61,6 @@ angular.module('adminModule', [])
             var index = $scope.deleteIndex;
             $scope.AdminUsers.splice(index, 1);
             console.log($scope.AdminUsers.length);
-            if ($scope.AdminUsers.length < 1) {
-                $scope.AdminuserTable = false;
-            }
             $scope.deleteModal = !$scope.deleteModal;
         }
 
@@ -74,15 +70,15 @@ angular.module('adminModule', [])
 
         $scope.addIndex = null;
         $scope.toggleAdminUserProject = function(index, btnClicked) {
-            $scope.buttonClicked = btnClicked;
+           $scope.buttonClicked = btnClicked;
             $scope.showModal = !$scope.showModal;
             $scope.addIndex = index;
             $scope.addUserName = '';
             $scope.addUserLogin = '';
             $scope.addUserRole = '';
-            $scope.Password = '';
+            $scope.addUserPassword = '';
             $scope.addUserConfirmPassword = '';
-            $scope.userEmail = '';
+            $scope.adminUserEmail = '';
             $scope.exampleForm.$setPristine();
         };
         $scope.addAdminUserAlert = function(valid) {
@@ -115,15 +111,6 @@ angular.module('adminModule', [])
             $scope.addUserName = $scope.AdminUsers[index].Name;
             $scope.addUserLogin = $scope.AdminUsers[index].Login;
             $scope.addUserRole = $scope.AdminUsers[index].Role;
-            if (angular.isUndefined($scope.addUserName) || $scope.addUserName === null || $scope.addUserName == '') {
-                alert('fill the user name');
-            }
-            if (angular.isUndefined($scope.addUserLogin) || $scope.addUserLogin === null || $scope.addUserLogin == '') {
-                alert('fill the user login');
-            }
-            if (angular.isUndefined($scope.addUserRole) || $scope.addUserRole === null || $scope.addUserRole == '') {
-                alert('fill the user role');
-            }
         }
         // changes - vignesh 6 jan- start
         //projects Tab
@@ -183,7 +170,7 @@ angular.module('adminModule', [])
             return Math.ceil($scope.getActiveData().length / $scope.activeRowLimit);
         }
         $scope.getActiveData = function() {
-            return $filter('filter')($scope.activeProjects, $scope.filterActiveProject)
+            return $filter('filter')($scope.activeProjects, $scope.filterActiveProject);
         }
         //inactive project table pagination
 
