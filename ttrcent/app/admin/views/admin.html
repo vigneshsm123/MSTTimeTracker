@@ -22,7 +22,7 @@
 	  </ul>
 	</div>
 </div>
-<div class="user-container" class="clearfix">
+<div class="user-container clearfix">
 	<div ng-show="isSet(1)">
 
 		<div class="row">
@@ -35,7 +35,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="row" ng-show="isProjectSet(1)" class="clearfix row col-md-8 col-sm-8 col-md-offset-2">
+		<div class="clearfix row col-md-8 col-sm-8 col-sm-offset-2" ng-show="isProjectSet(1)">
 			<form name="reportsForm1" class="col-md-12 col-sm-12 col-xs-12">
 					<div class="">
 						<div class="form-group">
@@ -94,11 +94,11 @@
 						</div>
 						<div class="form-group clearfix">
 							<label class="col-sm-12 control-label">Or Set Dates</label>
-							<div class="col-md-6 col-sm-3">
+							<div class="col-xs-6">
 								<ng-datepicker ng-model="startReportDate" first-week-day-sunday="true" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
 									</ng-datepicker>
 							</div>
-							<div class="col-md-6 col-sm-3">
+							<div class="col-xs-6">
 								<ng-datepicker ng-model="endReportDate" first-week-day-sunday="true" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
 								</ng-datepicker>
 							</div>
