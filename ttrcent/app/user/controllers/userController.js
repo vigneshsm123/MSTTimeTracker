@@ -179,8 +179,8 @@ angular.module('userModule', [])
 			// Report Controller
 
 			$scope.reportCheck = false;
-			$scope.selectAll = function(){
-				$scope.reportCheck = !$scope.reportCheck;
+			$scope.selectAll = function(flag){
+				$scope.reportCheck = flag;
 			}
 
 			$scope.proTimePeriods = ["This Month", "Last Month", "This Week", "Last Week"];

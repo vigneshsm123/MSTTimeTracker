@@ -130,7 +130,7 @@
 							<label class="control-label">Project</label>
 							<div class="panel panel-group">
 								<div class="panel panel-default">
-							      <div class="panel-heading" role="group"><button type="button"  ng-click = "selectAll()" class="btn btn-primary btn-report-project">Selectall / Deselectall</button><!-- <button type="button" class="btn btn-primary btn-report-project" ng-click = "selectAll()"></button> --></div>
+							      <div class="panel-heading" role="group"><button type="button"  ng-click = "selectAll(true)" class="btn btn-primary btn-report-project">Selectall </button><button type="button" class="btn btn-primary btn-report-project" ng-click = "selectAll(flase)">Deselectall</button></div>
 							      <div class="panel-body">
 							      	<ul class="list-group row">
 							      		<li class="list-group-item col-xs-6" ng-repeat="userProject in userProjects">
@@ -158,6 +158,7 @@
 							<div class="col-md-6">
 								<ng-datepicker ng-model="endReportDate" first-week-day-sunday="true" placeholder="Pick a date" view-format="DD/MM/YYYY" format="DD/MM/YYYY">
 								</ng-datepicker>
+
 							</div>
 						</div>
 						<div class="form-group">
