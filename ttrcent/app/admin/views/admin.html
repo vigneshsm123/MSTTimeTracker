@@ -217,6 +217,8 @@
       Next
       </button>
    </div>
+   <div>{{"value of tester: "+ tester}}</div>
+   
    <!--inactive project table div-->
    <div class="col-md-12" ng-show ="inactiveProjects.length>0">
       <div class="inner-addon left-addon">
@@ -292,6 +294,7 @@
          </div>
       </div>
    </div>
+   
    <!--EDIT project modal-->
    <div class="modal fade" id="editProjectModal" role="dialog">
       <div class="modal-dialog">
@@ -350,13 +353,14 @@
          </div>
       </div>
    </div>
-   <modal visible="deleteProjModal">
+   <custom-dir visible="deleteProjModal">
       Are you sure want to delete ?
       <div class="right">
+		 <input type="text" ng-model="tester" />
          <button ng-click="removeProjectInfo()" class="btn btn-default">Delete</button>
          <button ng-click="toggleDeleteModal(-1,'',false)" class="btn btn-default">Cancel</button>
       </div>
-   </modal>
+   </custom-dir>
 </div>
 	<div ng-show="isSet(3)">
 		<div class="row">

@@ -1,5 +1,9 @@
 angular.module('userModule', [])
 .controller('userController', function($scope, $rootScope, $filter, $http, loginService) {
+	
+	$scope.modalHandler = {
+		"test" : "test"
+	};
 
 	//Roting Service returning function
 		$scope.userLogout = function(){

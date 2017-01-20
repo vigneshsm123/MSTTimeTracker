@@ -237,6 +237,7 @@ angular.module('adminModule', [])
             $scope.deleteProjModal = !$scope.deleteProjModal;
         };
         $scope.removeProjectInfo = function() {
+			
             if ($scope.deleteIndex != -1) {
                 if ($scope.deleteCollId == 'active')
                     $scope.activeProjects.splice($scope.deleteIndex, 1);
